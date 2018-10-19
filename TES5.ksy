@@ -6,7 +6,7 @@ seq:
   - id: header
     type: file_header
     doc: ESP/ESM header form
-  - id: groups
+  - id: top_groups
     type: esp_groups
     doc: Top level groups
     
@@ -43,14 +43,14 @@ types:
   file_header:
     seq:
       - id: header
-        type: form_header
+        type: tes4_header
         doc: TES4 form-specific header
       - id: fields
         type: tes4_fields
         size: header.data_size
         doc: TES4 form-specific fields    
 
-  form_header:
+  tes4_header:
     seq:
       - id: type
         type: str
@@ -182,7 +182,7 @@ types:
         doc: Type code
       - id: group_size
         type: u4
-        doc: Size, in bytes, of group (minus header)
+        doc: Size, in bytes, of group (including header)
       - id: label
         type: u4
         doc: Group label (depends on group type)
@@ -199,5 +199,53 @@ types:
         doc: Unknown purpose
       - type: u2
       - id: data
-        size: group_size -24
+        type: esp_forms
+        size: group_size - 24
         doc: Forms and sub-groups belonging to group
+
+  form_header_flags:
+    seq:
+      - type: b18
+      - id: compressed
+        type: b1
+      - type: b13
+
+  form_header:
+    seq:
+      - id: type
+        type: str
+        size: 4
+        encoding: UTF-8
+        doc: Form type code
+      - id: data_size
+        type: u4
+        doc: Size, in bytes, of form (minus header)
+      - id: flags
+        type: form_header_flags
+        doc: Form-specific bitflags
+      - id: form_id
+        type: u4
+        doc: Unique form ID
+      - id: revision
+        type: u4
+        doc: Used for revision control by the CK
+      - id: version
+        type: u2
+        doc: Version number
+      - id: unknown
+        type: u2
+        doc: Unknown purpose
+
+  esp_forms:
+    seq:
+      - id: forms
+        type: esp_form
+        repeat: expr
+        repeat-expr: 1
+        
+  esp_form:
+    seq:
+      - id: header
+        type: form_header
+      - id: data
+        size: header.data_size
