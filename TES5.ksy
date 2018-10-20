@@ -257,7 +257,37 @@ types:
       - id: unknown
         type: u2
         doc: Unknown purpose
-	
+
+  form:
+    seq:
+      - id: header
+        type: form_header
+      - id: form_data
+        size: header.data_size
+        type:
+          switch-on: _parent.type
+          cases:
+            '"GMST"': gmst_form
+            '"KYWD"': kywd_form
+            '"LCRT"': lcrt_form
+            '"AACT"': aact_form
+            '"TXST"': txst_form
+            _: unknown_form_data
+
+  unknown_form_data:
+    seq:
+      - id: data
+        type: str
+        encoding: UTF-8
+        size: _parent.header.data_size
+
+  subgroup:
+    seq:
+      - id: header
+        type: group_header
+      - id: group_data
+        size: header.group_size - 24
+
   esp_form:
     seq:
       - id: type
@@ -270,17 +300,210 @@ types:
       - id: form
         type: form
         if: type != 'GRUP'
-	
-  form:
+
+  edid_field:        
+    params:
+      - id: data_size
+        type: u2
     seq:
-      - id: header
-        type: form_header
-      - id: form_data
-        size: header.data_size
+      - id: editor_id
+        type: strz
+        encoding: UTF-8
+        size: data_size
+        
+  color:
+    seq:
+      - id: r
+        type: u1
+      - id: g
+        type: u1
+      - id: b
+        type: u1
+      - id: a
+        type: u1
+
+  gmst_form:
+    seq:
+      - id: fields
+        type: gmst_field
+        repeat: expr
+        repeat-expr: 2
+        
+  gmst_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+      - id: data_size
+        type: u2
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"GMST"': gmst_data_field
+            
+  gmst_data_field:
+    seq:
+      - id: value
+        type: u4
+        
+  kywd_form:
+    seq:
+      - id: fields
+        type: kywd_field
+        repeat: eos
+        
+  kywd_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+      - id: data_size
+        type: u2
+      - id: data
+        type: 
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"CNAM"': color
+  
+  lcrt_form:
+    seq:
+      - id: fields
+        type: lcrt_field
+        repeat: eos
+        
+  lcrt_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+      - id: data_size
+        type: u2
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"CNAM"': color
+            
+  aact_form:
+    seq:
+      - id: fields
+        type: aact_field
+        repeat: eos
+        
+  aact_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+      - id: data_size
+        type: u2
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"CNAM"': color
+            
+  txst_form:
+    seq:
+      - id: fields
+        type: txst_field
+        repeat: eos
+        
+  txst_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+      - id: data_size
+        type: u2
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"OBND"': txst_obnd_field
+            '"TX00"': txst_tx_field
+            '"TX01"': txst_tx_field
+            '"TX02"': txst_tx_field
+            '"TX03"': txst_tx_field
+            '"TX04"': txst_tx_field
+            '"TX05"': txst_tx_field
+            '"TX06"': txst_tx_field
+            '"TX07"': txst_tx_field
+            '"DODT"': txst_dodt_field
+            '"DNAM"': txst_dnam_field
+            
+  txst_obnd_field:
+    seq:
+      - id: unknown
+        size: 12
+  
+  txst_tx_field:
+    seq:
+      - id: path
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        
+  txst_dodt_field:
+    seq:
+      - id: min_width
+        type: f4
+      - id: max_width
+        type: f4
+      - id: min_height
+        type: f4
+      - id: max_height
+        type: f4
+      - id: depth
+        type: f4
+      - id: shininess
+        type: f4
+      - id: parallax_scale
+        type: f4
+      - id: parallax_passes
+        type: u1
+      - id: flags
+        type: txst_dodt_flags
+      - id: unknown
+        type: u2
+      - id: rgb
+        type: color
+        
+  txst_dodt_flags:
+    seq:
+      - id: parallax
+        type: b1
+      - id: alpha_blending
+        type: b1
+      - id: alpha_testing
+        type: b1
+      - id: not_4_subtextures
+        type: b1
+      - type: b4
       
-  subgroup:
+  txst_dnam_field:
     seq:
-      - id: header
-        type: group_header
-      - id: group_data
-        size: header.group_size - 24
+      - id: flags
+        type: txst_dnam_flags
+        
+  txst_dnam_flags:
+    seq:
+      - id: not_has_specular_map
+        type: b1
+      - id: facegen_textures
+        type: b1
+      - id: had_model_space_normal_map
+        type: b1
+      - type: b13
+  
