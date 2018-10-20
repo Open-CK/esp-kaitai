@@ -1,5 +1,11 @@
 meta:
   id: tes5
+  title: Elder Scrolls Plugin/Master
+  application: The Elder Scrolls V (Skyrim)
+  file-extension:
+    - esp
+    - esm
+    - esl
   endian: le
   
 seq:
@@ -24,7 +30,65 @@ enums:
     9: cell_temporary_children
     10: cell_visible_distant_children
     
+  glob_fnam_type:
+    0x73: short
+    0x6C: long
+    0x66: float
+    
 types:
+  lstring:
+    params:
+      - id: data_size
+        type: u2
+    seq:
+      - id: index
+        type: u4
+        if: _root.header.header.flags.localized
+      - id: string
+        type: strz
+        encoding: UTF-8
+        size: data_size
+        if: not _root.header.header.flags.localized
+        
+  actor_value_skills:
+    seq:
+      - id: one_handed
+        type: u1
+      - id: two_handed
+        type: u1
+      - id: marksman
+        type: u1
+      - id: block
+        type: u1
+      - id: smithing
+        type: u1
+      - id: heavy_armor
+        type: u1
+      - id: light_armor
+        type: u1
+      - id: pickpocket
+        type: u1
+      - id: lockpicking
+        type: u1
+      - id: sneak
+        type: u1
+      - id: alchemy
+        type: u1
+      - id: speechcraft
+        type: u1
+      - id: alteration
+        type: u1
+      - id: conjuration
+        type: u1
+      - id: destruction
+        type: u1
+      - id: illusion
+        type: u1
+      - id: restoration
+        type: u1
+      - id: enchanting
+        type: u1
+
   file_header_flags:
     seq:
       - id: localized
@@ -272,6 +336,8 @@ types:
             '"LCRT"': lcrt_form
             '"AACT"': aact_form
             '"TXST"': txst_form
+            '"GLOB"': glob_form
+            '"CLAS"': clas_form
             _: unknown_form_data
 
   unknown_form_data:
@@ -507,3 +573,105 @@ types:
         type: b1
       - type: b13
   
+  glob_form:
+    seq:
+      - id: fields
+        type: glob_field
+        repeat: eos
+  
+  glob_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+      - id: data_size
+        type: u2
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"FNAM"': glob_fnam_field
+            '"FLTV"': glob_fltv_field
+  
+  glob_fnam_field:
+    seq:
+      - id: value_type
+        type: u1
+        enum: glob_fnam_type
+        
+  glob_fltv_field:
+    seq:
+      - id: value
+        type: f4
+        
+  clas_form:
+    seq:
+      - id: fields
+        type: clas_field
+        repeat: eos
+  
+  clas_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+      - id: data_size
+        type: u2
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"FULL"': clas_full_field
+            '"DESC"': clas_desc_field
+            '"ICON"': clas_icon_field
+            '"DATA"': clas_data_field
+  
+  clas_full_field:
+    seq:
+      - id: name
+        type: lstring(_parent.data_size)
+        
+  clas_desc_field:
+    seq:
+      - id: description
+        type: lstring(_parent.data_size)
+        
+  clas_icon_field:
+    seq:
+      - id: icon
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        
+  clas_data_field:
+    seq:
+      - id: unknown
+        type: u4
+      - id: training_skill
+        type: u1
+      - id: training_level
+        type: u1
+      - id: skill_weights
+        type: actor_value_skills
+      - id: bleedout_default
+        type: f4
+      - id: voice_points
+        type: u4
+      - id: health_weight
+        type: u1
+      - id: magicka_weight
+        type: u1
+      - id: stamina_weight
+        type: u1
+      - id: flags
+        type: clas_data_flags
+        
+  clas_data_flags:
+    seq:
+      - id: guard
+        type: b1
+      - type: b7
