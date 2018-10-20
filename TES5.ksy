@@ -203,6 +203,33 @@ types:
         size: group_size - 24
         doc: Forms and sub-groups belonging to group
 
+  esp_forms:
+    seq:
+      - id: forms
+        type: esp_form
+        repeat: eos
+
+  group_header:
+    seq:
+      - id: group_size
+        type: u4
+        doc: Size, in bytes, of group (including header)
+      - id: label
+        type: u4
+        doc: Group label (depends on group type)
+      - id: group_type
+        type: s4
+        enum: group_type
+        doc: Group type enumeration
+      - id: stamp
+        type: u2
+        doc: Date stamp
+      - type: u2
+      - id: version
+        type: u2
+        doc: Unknown purpose
+      - type: u2
+
   form_header_flags:
     seq:
       - type: b18
@@ -212,11 +239,6 @@ types:
 
   form_header:
     seq:
-      - id: type
-        type: str
-        size: 4
-        encoding: UTF-8
-        doc: Form type code
       - id: data_size
         type: u4
         doc: Size, in bytes, of form (minus header)
@@ -235,17 +257,30 @@ types:
       - id: unknown
         type: u2
         doc: Unknown purpose
-
-  esp_forms:
-    seq:
-      - id: forms
-        type: esp_form
-        repeat: expr
-        repeat-expr: 1
-        
+	
   esp_form:
+    seq:
+      - id: type
+        type: str
+        size: 4
+        encoding: UTF-8
+      - id: subgroup
+        type: subgroup
+        if: type == 'GRUP'
+      - id: form
+        type: form
+        if: type != 'GRUP'
+	
+  form:
     seq:
       - id: header
         type: form_header
-      - id: data
+      - id: form_data
         size: header.data_size
+      
+  subgroup:
+    seq:
+      - id: header
+        type: group_header
+      - id: group_data
+        size: header.group_size - 24
