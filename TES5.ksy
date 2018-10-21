@@ -43,6 +43,38 @@ enums:
     0x73: short
     0x6C: long
     0x66: float
+
+  fact_xnam_combat:
+    0: neutral
+    1: enemy
+    2: ally
+    3: friend
+
+  fact_plvd_specification_type:
+    0: near_reference
+    1: in_cell
+    2: near_package_start_location
+    3: near_editor_location
+    6: linked_reference
+    12: near_self
+
+  ctda_operator:
+    0: equal_to
+    1: not_equal_to
+    2: greater_than
+    3: greater_than_or_equal_to
+    4: less_than
+    5: less_than_or_equal_to
+
+  ctda_run_on_condition:
+    0: subject
+    1: target
+    2: reference
+    3: combat_target
+    4: linked_reference
+    5: quest_alias
+    6: package_data
+    7: event_data
     
 ###############################################################################
 #                             TYPE DEFINITIONS                                #
@@ -413,6 +445,7 @@ types:
             '"TXST"': txst_form
             '"GLOB"': glob_form
             '"CLAS"': clas_form
+            '"FACT"': fact_form
             _: unknown_form_data
         doc: Fields contained by form
 
@@ -453,6 +486,126 @@ types:
       - id: a
         type: u1
         doc: Alpha (?) value
+
+  citc_field:
+    seq:
+      - id: condition_item_count
+        type: u4
+        doc: Count of following CTDA fields
+
+  cis1_field:
+    params:
+      - id: data_size
+        type: u2
+        doc: Size of zstring
+    seq:
+      - id: variable
+        type: strz
+        encoding: UTF-8
+        size: data_size
+        doc: Variable represented as string
+
+  cis2_field:
+    params:
+      - id: data_size
+        type: u2
+        doc: Size of zstring
+    seq:
+      - id: variable
+        type: strz
+        encoding: UTF-8
+        size: data_size
+        doc: Variable represented as string
+
+  ctda_field:
+    seq:
+      - id: operator
+        type: b5
+        enum: ctda_operator
+        doc: Condition operator
+      - id: operator_flags
+        type: ctda_operator_flags
+        doc: Condition operator flags
+      - id: unknown
+        type: u3
+        doc: Unknown purpose (padding?)
+      - id: glob_comparison_value
+        type: u4
+        if: ctda_operator_flags.use_global
+        doc: Value against which the function result is compared (GLOB)
+      - id: comparison_value
+        type: f4
+        if: not ctda_operator_flags.use_global
+        doc: Value against which the function result is compared
+      - id: function_index
+        type: u2
+        doc: Function index (map to number+4096)
+      - id: padding
+        type: u2
+        doc: Padding, unused butes
+      - id: parameters
+        type: ctda_parameters
+        doc: Function parameters
+        if: function_index != 576
+      - id: parameters_get_event_data
+        type: ctda_parameters_get_event_data
+        doc: Function paramaters (for GetEventData function)
+        if: function_index == 576
+      - id: run_on_type
+        type: u4
+        enum: ctda_run_on_type
+        doc: How to apply the condition
+      - id: reference
+        type: u4
+        doc: Function reference
+      - id: unknown
+        type: s4
+        doc: Unknown purpose (always -1)
+
+  ctda_operator_flags:
+    seq:
+      - id: or
+        type: b1
+        doc: OR multiple conditions (default is AND)
+      - id: parameters_use_aliases
+        type: b1
+        doc: Parameters use quest alias data
+      - id: use_global
+        type: b1
+        doc: Use global
+      - id: use_pack_data
+        type: b1
+        doc: Parameters use pack data
+      - id: swap_target
+        type: b1
+        doc: Swap subject and target
+
+  ctda_parameters:
+    seq:
+      - id: param_1
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: 1st parameter (refer to function index for type)
+      - id: param_2
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: 2nd parameter (refer to function index for type)
+
+  ctda_parameters_get_event_data:
+    seq:
+      - id: param_1
+        type: u2
+        doc: Event function
+      - id: param_2
+        type: str
+        encoding: UTF-8
+        size: 2
+        doc: Event member
+      - id: param_3
+        type: u4
+        doc: 3rd parameter
 
 ###############################################################################
 #                           GMST (GAME SETTING) FORM                          #
@@ -840,3 +993,232 @@ types:
       - type: b7
         doc: Padding
       
+###############################################################################
+#                              FACT (FACTION) FORM                            #
+###############################################################################  
+  fact_form:
+    seq:
+      - id: fields
+        type: fact_field
+        repeat: eos
+        doc: Fields contained by FACT form
+
+  fact_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type: 
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"FULL"': fact_full_field
+            '"XNAM"': fact_xnam_field
+            '"DATA"': fact_data_field
+            '"JAIL"': fact_jail_field
+            '"WAIT"': fact_wait_field
+            '"STOL"': fact_stol_field
+            '"PLCN"': fact_plcn_field
+            '"CRGR"': fact_crgr_field
+            '"JOUT"': fact_jout_field
+            '"CRVA"': fact_crva_field
+            '"RNAM"': fact_rnam_field
+            '"MNAM"': fact_mnam_field
+            '"FNAM"': fact_fnam_field
+            '"VEND"': fact_vend_field
+            '"VENC"': fact_venc_field
+            '"VENV"': fact_venv_field
+            '"PLVD"': fact_plvd_field
+            '"CITC"': citc_field
+            '"CIS1"': cis1_field(data_size)
+            '"CIS2"': cis2_field(data_size)
+            '"CTDA"': ctda_field
+        doc: Fields contained by FACT form
+
+  fact_full_field:
+    seq:
+      - id: full_name
+        type: lstring
+        doc: Faction full name
+
+  fact_xnam_field:
+    seq:
+      - id: faction_form_id
+        type: u4
+        doc: Faction form ID (inter-faction relations)
+      - id: mod
+        type: u4
+        doc: Unused, not editable in CK
+      - id: combat
+        type: u4
+        enum: fact_xnam_combat
+        doc: Combat behaviour with faction
+
+  fact_data_field:
+    seq:
+      - id: flags
+        type: fact_data_flags
+        doc: Faction flags
+
+  fact_data_flags:
+    seq:
+      - id: hidden_from_pc
+        type: b1
+      - id: special_combat
+        type: b1
+      - type: b4
+      - id: track_crime
+        type: b1
+      - id: ignore_murder
+        type: b1
+      - id: ignore_assault
+        type: b1
+      - id: ignore_stealing
+        type: b1
+      - id: ignore_trespass
+        type: b1
+      - id: do_not_report_crimes_against_members
+        type: b1
+      - id: crime_gold_use_defaults
+        type: b1
+      - id: ignore_pickpocket
+        type: b1
+      - id: vendor
+        type: b1
+      - id: can_be_owner
+        type: b1
+      - id: ignore_werewolf
+        type: b1
+      - type: b15
+
+  fact_jail_field:
+    seq:
+      - id: jail_exterior_marker
+        type: u4
+        doc: Exterior marker for faction prison (REFR)
+  
+  fact_wait_field:
+    seq:
+      - id: follower_wait_marker
+        type: u4
+        doc: Marker that faction player followers are assigned to wait at (REFR)
+  
+  fact_stol_field:
+    seq:
+      - id: evidence_chest
+        type: u4
+        doc: Stolen goods chest (REFR)
+  
+  fact_plcn_field:
+    seq:
+      - id: belongings_chest
+        type: u4
+        doc: Player inventory chest (REFR)
+
+  fact_crgr_field:
+    seq:
+      - id: crime_group
+        type: u4
+        doc: Crime factions list (FLST)
+
+  fact_jout_field:
+    seq:
+      - id: jail_outfit
+        type: u4
+        doc: Jail outifit for player (OTFT)
+
+  fact_crva_field:
+    seq:
+      - id: arrest
+        type: u1
+      - id: attack_on_sight
+        type: u1
+      - id: murder
+        type: u2
+      - id: assault
+        type: u2
+      - id: trespass
+        type: u2
+      - id: pickpocket
+        type: u2
+      - id: unused
+        type: u2
+      - id: steal_multiplier
+        type: f4
+        if: _parent.data_size == 16 or _parent.data_size == 20
+      - id: escape
+        type: u2
+        if: _parent.data_size == 20
+      - id: werewolf
+        type: u2
+        if: _parent.data_size == 20
+
+  fact_rnam_field:
+    seq:
+      - id: rank_id
+        type: u4
+        doc: Rank ID
+
+  fact_mnam_field:
+    seq:
+      - id: male_title
+        type: lstring
+        doc: Male rank title
+
+  fact_fnam_field:
+    seq:
+      - id: female_title
+        type: lstring
+        doc: Female rank title
+
+  fact_vend_field:
+    seq:
+      - id: vendor_list
+        type: u4
+        doc: Merchandise list (FLST)
+
+  fact_venc_field:
+    seq:
+      - id: vendor_chest
+        type: u4
+        doc: Vendor chest (REFR)
+
+  fact_venv_field:
+    seq:
+      - id: start_hour
+        type: u2
+        doc: Trading start hour
+      - id: end_hour
+        type: u2
+        doc: Trading end hour
+      - id: radius
+        type: u4
+        doc: Radius
+      - id: buys_stolen
+        type: u1
+        doc: Buys stolen items
+      - id: not_sell_or_buy
+        type: u1
+        doc: Causes vendor to buy/sell everything except what is in Vendor List (VEND/FLST)
+      - id: unused
+        type: u2
+        doc: Unknown purpose
+
+  fact_plvd_field:
+    seq:
+      - id: specification_type
+        type: u4
+        enum: fact_plvd_specification_type
+        doc: Where to sell goods
+      - id: form_id
+        type: u4
+        doc: Meaning depends on specification type enum
+      - id: unused
+        type: u4
+        doc: Unknown purpose
