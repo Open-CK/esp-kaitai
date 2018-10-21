@@ -66,7 +66,7 @@ enums:
     4: less_than
     5: less_than_or_equal_to
 
-  ctda_run_on_condition:
+  ctda_run_on_type:
     0: subject
     1: target
     2: reference
@@ -169,7 +169,7 @@ types:
       - id: fields
         type: tes4_fields
         size: header.data_size
-        doc: TES4 form-specific fields    
+        doc: TES4 form-specific fields  
 
   tes4_header:
     seq:
@@ -196,22 +196,22 @@ types:
       - id: unknown
         type: u2
         doc: Unknown purpose
-  
-  file_header_flags:
-  seq:
-    - id: localized
-      type: b1
-      doc: Localized strings flag
-    - type: b6
-    - id: master
-      type: b1
-      doc: Master (ESM) file flag
-    - type: b1
-    - id: light_master
-      type: b1
-      doc: Light master (ESL) file flag
-    - type: b22
 
+  file_header_flags:
+    seq:
+      - id: localized
+        type: b1
+        doc: Localized strings flag
+      - type: b6
+      - id: master
+        type: b1
+        doc: Master (ESM) file flag
+      - type: b1
+      - id: light_master
+        type: b1
+        doc: Light master (ESL) file flag
+      - type: b22
+  
   tes4_fields:
     seq:
       - id: fields
@@ -446,6 +446,7 @@ types:
             '"GLOB"': glob_form
             '"CLAS"': clas_form
             '"FACT"': fact_form
+            '"EYES"': eyes_form
             _: unknown_form_data
         doc: Fields contained by form
 
@@ -519,30 +520,26 @@ types:
 
   ctda_field:
     seq:
-      - id: operator
-        type: b5
-        enum: ctda_operator
-        doc: Condition operator
-      - id: operator_flags
-        type: ctda_operator_flags
-        doc: Condition operator flags
+      - id: operator_info
+        type: ctda_operator_info
+        doc: Condition operator information
       - id: unknown
-        type: u3
+        size: 3
         doc: Unknown purpose (padding?)
       - id: glob_comparison_value
         type: u4
-        if: ctda_operator_flags.use_global
+        if: operator_info.use_global
         doc: Value against which the function result is compared (GLOB)
       - id: comparison_value
         type: f4
-        if: not ctda_operator_flags.use_global
+        if: not operator_info.use_global
         doc: Value against which the function result is compared
       - id: function_index
         type: u2
         doc: Function index (map to number+4096)
       - id: padding
         type: u2
-        doc: Padding, unused butes
+        doc: Padding, unused bytes
       - id: parameters
         type: ctda_parameters
         doc: Function parameters
@@ -558,12 +555,16 @@ types:
       - id: reference
         type: u4
         doc: Function reference
-      - id: unknown
+      - id: unknown_2
         type: s4
         doc: Unknown purpose (always -1)
 
-  ctda_operator_flags:
+  ctda_operator_info:
     seq:
+      - id: operator
+        type: b3
+        enum: ctda_operator
+        doc: Function operator
       - id: or
         type: b1
         doc: OR multiple conditions (default is AND)
@@ -583,13 +584,9 @@ types:
   ctda_parameters:
     seq:
       - id: param_1
-        type: str
-        encoding: UTF-8
         size: 4
         doc: 1st parameter (refer to function index for type)
       - id: param_2
-        type: str
-        encoding: UTF-8
         size: 4
         doc: 2nd parameter (refer to function index for type)
 
@@ -1044,7 +1041,7 @@ types:
   fact_full_field:
     seq:
       - id: full_name
-        type: lstring
+        type: lstring(_parent.data_size)
         doc: Faction full name
 
   fact_xnam_field:
@@ -1168,13 +1165,13 @@ types:
   fact_mnam_field:
     seq:
       - id: male_title
-        type: lstring
+        type: lstring(_parent.data_size)
         doc: Male rank title
 
   fact_fnam_field:
     seq:
       - id: female_title
-        type: lstring
+        type: lstring(_parent.data_size)
         doc: Female rank title
 
   fact_vend_field:
@@ -1222,3 +1219,63 @@ types:
       - id: unused
         type: u4
         doc: Unknown purpose
+
+###############################################################################
+#                                EYES (EYES) FORM                             #
+############################################################################### 
+  eyes_form:
+    seq:
+      - id: fields
+        type: eyes_field
+        repeat: eos
+        doc: Fields contained by EYES form
+
+  eyes_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"FULL"': eyes_full_field
+            '"ICON"': eyes_icon_field
+            '"DATA"': eyes_data_field
+        doc: Fields contained by EYES form
+
+  eyes_full_field:
+    seq:
+      - id: description
+        type: lstring(_parent.data_size)
+        doc: Item description
+
+  eyes_icon_field:
+    seq:
+      - id: icon_path
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Relative path to .dds from Textures directory
+  
+  eyes_data_field:
+    seq:
+      - id: flags
+        type: eyes_flags
+        doc: Eyes flags
+
+  eyes_flags:
+    seq:
+      - id: playable
+        type: b1
+      - id: not_male
+        type: b1
+      - id: not_female
+        type: b1
+      - type: b5
