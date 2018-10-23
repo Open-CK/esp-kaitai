@@ -75,6 +75,11 @@ enums:
     5: quest_alias
     6: package_data
     7: event_data
+
+  hdpt_option:
+    0: generic_default
+    1: default
+    2: char_gen
     
 ###############################################################################
 #                             TYPE DEFINITIONS                                #
@@ -446,6 +451,7 @@ types:
             '"GLOB"': glob_form
             '"CLAS"': clas_form
             '"FACT"': fact_form
+            '"HDPT"': hdpt_form
             '"EYES"': eyes_form
             _: unknown_form_data
         doc: Fields contained by form
@@ -603,6 +609,75 @@ types:
       - id: param_3
         type: u4
         doc: 3rd parameter
+
+  generic_modt:
+    params:
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of data
+      - id: version
+        type: u4
+        doc: Version of MODT field
+    seq:
+      - id: modt
+        type: modt_field(data_size)
+        if: version < 40
+      - id: modt_v40
+        type: modt_v40_field
+        if: version >= 40
+
+
+  modt_field:
+    params:
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of data
+    seq:
+      - id: hashes
+        type: modt_texture_hash
+        repeat: expr
+        repeat-expr: data_size / 12
+
+  modt_texture_hash:
+    seq:
+      - id: file_hash
+        type: u4
+        doc: Hash of file name
+      - id: unknown
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unknown bytes
+      - id: folder_hash
+        type: u4
+        doc: Hash of folder
+
+  modt_v40_field:
+    seq:
+      - id: num_headers
+        type: u4
+      - id: texture_count
+        type: u4
+      - id: unused
+        type: str
+        encoding: UTF-8
+        size: 4
+      - id: unique_tex_count
+        type: u4
+      - id: materials_count
+        type: u4
+      - id: hashes
+        type: modt_v40_texture_hash
+        repeat: eos
+
+  modt_v40_texture_hash:
+    seq:
+      - id: flags
+        type: u4
+      - id: type
+        type: u4
+      - id: texture_hash
+        type: u4
 
 ###############################################################################
 #                           GMST (GAME SETTING) FORM                          #
@@ -1219,6 +1294,106 @@ types:
       - id: unused
         type: u4
         doc: Unknown purpose
+
+###############################################################################
+#                             HEAD PART (HDPT) FORM                           #
+############################################################################### 
+  hdpt_form:
+    seq:
+      - id: fields
+        type: hdpt_field
+        repeat: eos
+        doc: Fields contained by HDPT form
+
+  hdpt_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"FULL"': hdpt_full_field
+            '"MODL"': hdpt_modl_field
+            '"MODT"': generic_modt(data_size, _parent._parent.header.version)
+            '"DATA"': hdpt_data_field
+            '"PNAM"': hdpt_pnam_field
+            '"HNAM"': hdpt_hnam_field
+            '"NAM0"': hdpt_nam0_field
+            '"NAM1"': hdpt_nam1_field
+            '"TNAM"': hdpt_tnam_field
+            '"RNAM"': hdpt_rnam_field
+            '"CNAM"': color
+
+  hdpt_full_field:
+    seq:
+      - id: name
+        type: lstring(_parent.data_size)
+        doc: Head part name (almost always the same as EDID)
+
+  hdpt_modl_field:
+    seq:
+      - id: nif_path
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Relative path to .nif (from Models directory)
+
+  hdpt_data_field:
+    seq:
+      - id: flags
+        type: hdpt_flags
+        doc: Flags - unknown purpose (TODO)
+
+  hdpt_flags:
+    seq:
+      - type: b8
+
+  hdpt_pnam_field:
+    seq:
+      - id: part_count
+        type: u4
+        doc: Unknown purpose - maybe part count?
+
+  hdpt_hnam_field:
+    seq:
+      - id: additional_part
+        type: u4
+        doc: Form ID of attached HDPT
+
+  hdpt_nam0_field:
+    seq:
+      - id: option
+        type: u4
+        enum: hdpt_option
+        doc: Option type
+
+  hdpt_nam1_field:
+    seq:
+      - id: tri_path
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Path to .tri file
+
+  hdpt_tnam_field:
+    seq:
+      - id: base_texture_set
+        type: u4
+        doc: Form ID of related TXST form
+  
+  hdpt_rnam_field:
+    seq:
+      - id: resource_list
+        type: u4
+        doc: Form ID of attached fixed resource list (FLST)
 
 ###############################################################################
 #                                EYES (EYES) FORM                             #
