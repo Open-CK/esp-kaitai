@@ -453,6 +453,9 @@ types:
             '"FACT"': fact_form
             '"HDPT"': hdpt_form
             '"EYES"': eyes_form
+            '"SOUN"': soun_form
+            '"ASPC"': aspc_form
+            '"LTEX"': ltex_form
             _: unknown_form_data
         doc: Fields contained by form
 
@@ -493,6 +496,27 @@ types:
       - id: a
         type: u1
         doc: Alpha (?) value
+
+  obnd_field:
+    seq:
+      - id: x1
+        type: u2
+        doc: X-coordinate 1
+      - id: y1
+        type: u2
+        doc: Y-coordinate 1
+      - id: z1
+        type: u2
+        doc: Z-coordinate 1
+      - id: x2
+        type: u1
+        doc: X-coordinate 2
+      - id: y2
+        type: u2
+        doc: Y-coordinate 2
+      - id: z2
+        type: u2
+        doc: Z-coordinate 2
 
   citc_field:
     seq:
@@ -823,7 +847,7 @@ types:
           switch-on: type
           cases:
             '"EDID"': edid_field(data_size)
-            '"OBND"': txst_obnd_field
+            '"OBND"': obnd_field
             '"TX00"': txst_tx_field
             '"TX01"': txst_tx_field
             '"TX02"': txst_tx_field
@@ -835,12 +859,6 @@ types:
             '"DODT"': txst_dodt_field
             '"DNAM"': txst_dnam_field
         doc: Fields contained by TXST form
-            
-  txst_obnd_field:
-    seq:
-      - id: unknown
-        size: 12
-        doc: Object bounds field (TODO)
   
   txst_tx_field:
     seq:
@@ -1454,3 +1472,168 @@ types:
       - id: not_female
         type: b1
       - type: b5
+
+###############################################################################
+#                               SOUND (SOUN) FORM                             #
+###############################################################################
+  soun_form:
+    seq:
+      - id: fields
+        type: soun_field
+        repeat: eos
+        doc: Fields contained by SOUN form
+
+  soun_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"OBND"': obnd_field
+            '"FNAM"': soun_fnam_field
+            '"SNDD"': soun_sndd_field
+            '"SNDC"': soun_sndc_field
+        doc: Fields contained by SOUN form
+
+  soun_fnam_field:
+    seq:
+      - id: file_name
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Path to .wav file
+
+  soun_sndd_field:
+    seq:
+      - id: unknown
+        size: 36
+        doc: Unknown SNDD struct (no longer used)
+
+  soun_sndc_field:
+    seq:
+      - id: sound_ref_form_id
+        type: u4
+        doc: Form ID of corresponding SNDR form
+
+###############################################################################
+#                          ACOUSTIC SPACE (ASPC) FORM                         #
+###############################################################################
+  aspc_form:
+    seq:
+      - id: fields
+        type: aspc_field
+        repeat: eos
+        doc: Fields contained by ASPC form
+  
+  aspc_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"OBND"': obnd_field
+            '"SNAM"': aspc_snam_field
+            '"RDAT"': aspc_rdat_field
+            '"BNAM"': aspc_bnam_field
+        doc: Fields contained by ASPC form
+
+  aspc_snam_field:
+    seq:
+      - id: ambient_sound
+        type: u4
+        doc: Form ID of associated ambient SNDR form
+
+  aspc_rdat_field:
+    seq:
+      - id: region_data
+        type: u4
+        doc: Form ID of associated region sound REGN form
+  
+  aspc_bnam_field:
+    seq:
+      - id: reverb
+        type: u4
+        doc: Form ID of associated reverb REVB form
+
+###############################################################################
+#                            LAND TEXTURE (LTEX) FORM                         #
+###############################################################################
+  ltex_form:
+    seq:
+      - id: fields
+        type: ltex_field
+        repeat: eos
+        doc: Fields contained by LTEX form
+
+  ltex_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"TNAM"': ltex_tnam_field
+            '"MNAM"': ltex_mnam_field
+            '"HNAM"': ltex_hnam_field
+            '"SNAM"': ltex_snam_field
+            '"GNAM"': ltex_gnam_field
+        doc: Fields contained by LTEX form
+
+  ltex_tnam_field:
+    seq:
+      - id: texture_set
+        type: u4
+        doc: Form ID of associated TXST form
+  
+  ltex_mnam_field:
+    seq:
+      - id: material
+        type: u4
+        doc: Form ID of associated MATT form
+
+  ltex_hnam_field:
+    seq:
+      - id: friction
+        type: u1
+        doc: Havok friction data
+      - id: restitution
+        type: u1
+        doc: Havok restitution data
+
+  ltex_snam_field:
+    seq:
+      - id: specular_exponent
+        type: u1
+        doc: Texture specular exponent (always 0x1E)
+
+  ltex_gnam_field:
+    seq:
+      - id: grass
+        type: u4
+        doc: Form ID of associated GRAS form
