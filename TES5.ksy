@@ -80,6 +80,12 @@ enums:
     0: generic_default
     1: default
     2: char_gen
+
+  race_data_size:
+    0: small
+    1: medium
+    2: large
+    4: extra_large
     
 ###############################################################################
 #                             TYPE DEFINITIONS                                #
@@ -453,6 +459,7 @@ types:
             '"FACT"': fact_form
             '"HDPT"': hdpt_form
             '"EYES"': eyes_form
+            '"RACE"': race_form
             '"SOUN"': soun_form
             '"ASPC"': aspc_form
             '"LTEX"': ltex_form
@@ -509,7 +516,7 @@ types:
         type: u2
         doc: Z-coordinate 1
       - id: x2
-        type: u1
+        type: u2
         doc: X-coordinate 2
       - id: y2
         type: u2
@@ -702,6 +709,23 @@ types:
         type: u4
       - id: texture_hash
         type: u4
+
+  bodt_field:
+    params:
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of data
+    seq:
+      - id: node_flags
+        type: u4
+        doc: Body part node flags (TODO)
+      - id: flags
+        type: u4
+        doc: Further flags
+      - id: skill
+        type: u4
+        doc: Corresponding skill (heavy or light armor)
+        if: data_size == 12
 
 ###############################################################################
 #                           GMST (GAME SETTING) FORM                          #
@@ -1472,6 +1496,257 @@ types:
       - id: not_female
         type: b1
       - type: b5
+
+###############################################################################
+#                                RACE (RACE) FORM                             #
+###############################################################################
+  race_form:
+    seq:
+      - id: fields
+        type: race_field
+        repeat: eos
+        doc: Fields contained by RACE formk
+
+  race_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"FULL"': race_full_field
+            '"DESC"': race_desc_field
+            '"SPCT"': race_spct_field
+            '"SPLO"': race_splo_field
+            '"WNAM"': race_wnam_field
+            '"BODT"': bodt_field(data_size)
+            '"KSIZ"': race_ksiz_field
+            '"KWDA"': race_kwda_field
+            '"DATA"': race_data_field
+            '"ANAM"': race_anam_field
+            '"MODT"': generic_modt(data_size, _parent._parent.header.version)
+            '"MTNM"': race_mtnm_field
+            '"VTCK"': race_vtck_field
+            '"DNAM"': race_dnam_field
+            '"HCLF"': race_hclf_field
+
+  race_full_field:
+    seq:
+      - id: full_name
+        type: lstring(_parent.data_size)
+        doc: Full race name (as it appears in-game)
+
+  race_desc_field:
+    seq:
+      - id: description
+        type: lstring(_parent.data_size)
+        doc: Race description (as it appears in-game)
+
+  race_spct_field:
+    seq:
+      - id: spell_count
+        type: u4
+        doc: Number of SPLO fields in RACE form
+
+  race_splo_field:
+    seq:
+      - id: racial_spell
+        type: u4
+        doc: FormID of associated race-specific SPEL or SHOU form
+
+  race_wnam_field:
+    seq:
+      - id: skin
+        type: u4
+        doc: FormID of associated ARMO form
+
+  race_ksiz_field:
+    seq:
+      - id: keyword_count
+        type: u4
+        doc: Count of KYWD formIDs in following KWDA field
+
+  race_kwda_field:
+    seq:
+      - id: keyword
+        type: u4
+        repeat: expr
+        repeat-expr: _parent.data_size / 4
+        doc: KYWD formIDs
+
+  race_data_field:
+    seq:
+      - id: racial_skill
+        type: race_data_skill
+        repeat: expr
+        repeat-expr: 7
+        doc: Racial skill bonuses
+      - type: u2
+      - id: height_male
+        type: u4
+        doc: Male height
+      - id: height_female
+        type: u4
+        doc: Female height
+      - id: weight_male
+        type: u4
+        doc: Male weight
+      - id: weight_female
+        type: u4
+        doc: Female weight
+      - id: flags
+        type: race_data_flags
+        doc: Racial flags
+      - id: start_health
+        type: f4
+        doc: Starting health
+      - id: start_magicka
+        type: f4
+        doc: Starting magicka
+      - id: start_stamina
+        type: f4
+        doc: Starting stamina
+      - id: carry_weight
+        type: f4
+        doc: Base carry weight
+      - id: mass
+        type: f4
+        doc: Base mass
+      - id: acceleration
+        type: f4
+        doc: Acceleration rate
+      - id: deceleration
+        type: f4
+        doc: Deceleration rate
+      - id: size
+        type: u4
+        enum: race_data_size
+        doc: Size information
+      - id: head_biped_obj
+        type: u4
+        doc: Head biped object
+      - id: hair_biped_obj
+        type: u4
+        doc: Hair biped object
+      - id: injured_health_pc
+        type: f4
+        doc: Injured health percentage
+      - id: shield_biped_obj
+        type: u4
+        doc: Shield biped object
+      - id: health_regen
+        type: f4
+        doc: Health regeneration
+      - id: magicka_regen
+        type: f4
+        doc: Magicka regeneration
+      - id: stamina_regen
+        type: f4
+        doc: Stamina regeneration
+      - id: unarmed_damage
+        type: f4
+        doc: Unarmed damage
+      - id: unarmed_reach
+        type: f4
+        doc: Unarmed reach
+      - id: body_biped_obj 
+        type: u4
+        doc: Body biped object
+      - id: aim_angle_tolerance
+        type: f4
+        doc: Aim angle tolerance
+      - type: u4
+      - id: angular_acc_rate
+        type: f4
+        doc: Angular acceleration rate
+      - id: angular_tolerance
+        type: f4
+        doc: Angular tolerance
+      - id: hostile_flags
+        type: race_data_hostile_flags
+        doc: Hostility flags
+      - id: unknown_ints
+        type: u4
+        repeat: expr
+        repeat-expr: 9
+        doc: Unknown integers
+      - id: unknown_floats
+        type: f4
+        repeat: expr
+        repeat-expr: 9
+        doc: Unknown floats (only version 43 of form)
+        if: _parent._parent.header.version == 43
+
+  race_data_skill:
+    seq:
+      - id: index
+        type: u1
+        doc: Index to skill in Actor Value list
+      - id: bonus
+        type: u1
+        doc: Racial bonus to indexed skill
+
+  race_data_flags:
+    seq:
+      - id: flags
+        type: u4
+        doc: Racial flags (TODO)
+
+  race_data_hostile_flags:
+    seq:
+      - type: b1
+      - id: non_hostile
+        type: b1
+        doc: Indicates non hostile race
+      - type: b30  
+
+  race_anam_field:
+    seq:
+      - id: nif_path
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Relative path to .nif from Models directory
+
+  race_mtnm_field:
+    seq:
+      - id: movement_type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Movement type code (WALK, RUN1, SNEK, BLD0, SWIM)
+
+  race_vtck_field:
+    seq:
+      - id: voice_type
+        type: u4
+        repeat: expr
+        repeat-expr: 2
+        doc: FormIDs of associated male/female VTYP
+
+  race_dnam_field:
+    seq:
+      - id: decapitation_armor
+        type: u4
+        repeat: expr
+        repeat-expr: 2
+        doc: FormIDs of assocated male/female ARMO
+
+  race_hclf_field:
+    seq:
+      - id: hair_color
+        type: u4
+        repeat: expr
+        repeat-expr: 2
+        doc: FormIDs of associated male/female CLFM
 
 ###############################################################################
 #                               SOUND (SOUN) FORM                             #
