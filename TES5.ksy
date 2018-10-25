@@ -1537,6 +1537,13 @@ types:
             '"VTCK"': race_vtck_field
             '"DNAM"': race_dnam_field
             '"HCLF"': race_hclf_field
+            '"TINL"': race_tinl_field
+            '"PNAM"': race_pnam_field
+            '"UNAM"': race_unam_field
+            '"ATKR"': race_atkr_field
+            '"ATKD"': race_atkd_field
+            '"ATKE"': race_atke_field
+            '"INDX"': race_indx_field
 
   race_full_field:
     seq:
@@ -1747,6 +1754,94 @@ types:
         repeat: expr
         repeat-expr: 2
         doc: FormIDs of associated male/female CLFM
+
+  race_tinl_field:
+    seq:
+      - id: tint_count
+        type: u2
+        doc: Number of tints available to race
+
+  race_pnam_field:
+    seq:
+      - id: facegen_main_clamp
+        type: f4
+        doc: Facegen main clamp
+
+  race_unam_field:
+    seq:
+      - id: facegen_face_clamp
+        type: f4
+        doc: Facegen face clamp
+
+  race_atkr_field:
+    seq:
+      - id: attack_race
+        type: u4
+        doc: FormID
+
+  race_atkd_field:
+    seq:
+      - id: damage_multiplier
+        type: f4
+        doc: Attack damage multiplier
+      - id: attack_change
+        type: f4
+        doc: Attack chance
+      - id: attack_spell
+        type: u4
+        doc: FormID of associated attack spell
+      - id: flags
+        type: race_atkd_flags
+        doc: Attack flags (Identifies attacks)
+      - id: attack_angle
+        type: f4
+        doc: Attack angle
+      - id: strike_angle
+        type: f4
+        doc: Strike angle
+      - id: stagger
+        type: f4
+        doc: Stagger chance
+      - id: attack_type
+        type: u4
+        doc: FormID of associated attack
+      - id: knockdown
+        type: f4
+        doc: Knockdown chance
+      - id: recovery_time
+        type: f4
+        doc: Recovery time
+      - id: fatigue_multiplier
+        type: f4
+        doc: Fatigue multiplier
+
+  race_atkd_flags:
+    seq:
+      - id: ignore_weapon
+        type: b1
+      - id: bash_attack
+        type: b1
+      - id: power_attack
+        type: b1
+      - id: left_attack
+        type: b1
+      - id: rotating_attack
+        type: b1
+      - type: b27
+
+  race_atke_field:
+    seq:
+      - id: attack_name
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Attack name
+
+  race_indx_field:
+    seq:
+      - id: unknown
+        type: u4
+        doc: Unknown purpose, always 0 (precedes .egt models)
 
 ###############################################################################
 #                               SOUND (SOUN) FORM                             #
