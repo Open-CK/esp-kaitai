@@ -10,66 +10,67 @@ Progress
 --------
 If you're wondering how we're doing so far, our progress through potential records/forms is shown below:
 
+
 | Done? | Type | Purpose                                        |
 |-------|:----:|:----------------------------------------------:|
-|  <ul><li>[x]</ul></li>  | GMST | Game setting                              |
-|  <ul><li>[x]</ul></li>  | KYWD | Keyword                                   |
-|  <ul><li>[x]</ul></li>  | LCRT | Location Reference Type                   |
-|  <ul><li>[x]</ul></li>  | AACT | Action                                    |
-|  <ul><li>[x]</ul></li>  | TXST | Texture Set                               |
-|  <ul><li>[x]</ul></li>  | GLOB | Global Variable                           |
-|  <ul><li>[x]</ul></li>  | CLAS | Class                                     |
-|  <ul><li>[x]</ul></li>  | FACT | Faction                                   |
-|  <ul><li>[x]</ul></li>  | HDPT | Head Part                                 |
-|  <ul><li>[x]</ul></li>  | EYES | Eyes                                      |
-|  <ul><li>[ ]</ul></li>  | RACE | Race *(in progress)*                      |
-|  <ul><li>[x]</ul></li>  | SOUN | Sound                                     |
-|  <ul><li>[x]</ul></li>  | ASPC | Acoustic Space                            |
-|  <ul><li>[ ]</ul></li>  | MGEF | Magic Effect                              |
-|  <ul><li>[ ]</ul></li>  | SCPT | Script                                    |
-|  <ul><li>[x]</ul></li>  | LTEX | Land Texture                              |
-|  <ul><li>[ ]</ul></li>  | ENCH | Enchantment                               |
-|  <ul><li>[ ]</ul></li>  | SPEL | Spell                                     |
-|  <ul><li>[ ]</ul></li>  | SCRL | Scroll                                    |
-|  <ul><li>[ ]</ul></li>  | ACTI | Activator                                 |
-|  <ul><li>[ ]</ul></li>  | TACT | Talking Activator                         |
-|  <ul><li>[ ]</ul></li>  | ARMO | Armor                                     |
-|  <ul><li>[ ]</ul></li>  | BOOK | Book                                      |
-|  <ul><li>[ ]</ul></li>  | CONT | Container                                 |
-|  <ul><li>[ ]</ul></li>  | DOOR | Door                                      |
-|  <ul><li>[ ]</ul></li>  | INGR | Ingredient                                |
-|  <ul><li>[ ]</ul></li>  | LIGH | Light                                     |
-|  <ul><li>[ ]</ul></li>  | MISC | Miscellaneous Object                      |
-|  <ul><li>[ ]</ul></li>  | APPA | Apparatus                                 |
-|  <ul><li>[ ]</ul></li>  | STAT | Static                                    |
-|  <ul><li>[ ]</ul></li>  | MSTT | Movable Static                            |
-|  <ul><li>[ ]</ul></li>  | GRAS | Grass                                     |
-|  <ul><li>[ ]</ul></li>  | TREE | Tree                                      |
-|  <ul><li>[ ]</ul></li>  | FLOR | Flora                                     |
-|  <ul><li>[ ]</ul></li>  | FURN | Furniture                                 |
-|  <ul><li>[ ]</ul></li>  | WEAP | Weapon                                    |
-|  <ul><li>[ ]</ul></li>  | AMMO | Ammunition                                |
-|  <ul><li>[ ]</ul></li>  | NPC_ | NPC                                       |
-|  <ul><li>[ ]</ul></li>  | LVLN | Levelled Actor                            |
-|  <ul><li>[ ]</ul></li>  | KEYM | Key                                       |
-|  <ul><li>[ ]</ul></li>  | ALCH | Potion                                    |
-|  <ul><li>[ ]</ul></li>  | IDLM | Idle Marker                               |
-|  <ul><li>[ ]</ul></li>  | COBJ | Constructible Object                      |
-|  <ul><li>[ ]</ul></li>  | PROJ | Projectile                                |
-|  <ul><li>[ ]</ul></li>  | HAZD | Hazard                                    |
-|  <ul><li>[ ]</ul></li>  | SLGM | Soul Gem                                  |
-|  <ul><li>[ ]</ul></li>  | LVLI | Leveled Item                              |
-|  <ul><li>[ ]</ul></li>  | WTHR | Weather                                   |
-|  <ul><li>[ ]</ul></li>  | CLMT | Climate                                   |
-|  <ul><li>[ ]</ul></li>  | SPGD | Shader Particle Geometry                  |
-|  <ul><li>[ ]</ul></li>  | RFCT | Visual Effect                             |
-|  <ul><li>[ ]</ul></li>  | REGN | Region                                    |
-|  <ul><li>[ ]</ul></li>  | NAVI | NavMesh                                   |
-|  <ul><li>[ ]</ul></li>  | CELL | Cell                                      |
-|  <ul><li>[ ]</ul></li>  | WRLD | Worldspace                                |
-|  <ul><li>[ ]</ul></li>  | DIAL | Dialog Branch                             |
-|  <ul><li>[ ]</ul></li>  | QUST | Quest                                     |
-|  <ul><li>[ ]</ul></li>  | IDLE | Idle Animation                            |
-|  <ul><li>[ ]</ul></li>  | PACK | AI Package                                |
+|  <ul><li>[x]</li></ul>  | GMST | Game setting                              |
+|  <ul><li>[x]</li></ul>  | KYWD | Keyword                                   |
+|  <ul><li>[x]</li></ul>  | LCRT | Location Reference Type                   |
+|  <ul><li>[x]</li></ul>  | AACT | Action                                    |
+|  <ul><li>[x]</li></ul>  | TXST | Texture Set                               |
+|  <ul><li>[x]</li></ul>  | GLOB | Global Variable                           |
+|  <ul><li>[x]</li></ul>  | CLAS | Class                                     |
+|  <ul><li>[x]</li></ul>  | FACT | Faction                                   |
+|  <ul><li>[x]</li></ul>  | HDPT | Head Part                                 |
+|  <ul><li>[x]</li></ul>  | EYES | Eyes                                      |
+|  <ul><li>[ ]</li></ul>  | RACE | Race *(in progress)*                      |
+|  <ul><li>[x]</li></ul>  | SOUN | Sound                                     |
+|  <ul><li>[x]</li></ul>  | ASPC | Acoustic Space                            |
+|  <ul><li>[ ]</li></ul>  | MGEF | Magic Effect                              |
+|  <ul><li>[ ]</li></ul>  | SCPT | Script                                    |
+|  <ul><li>[x]</li></ul>  | LTEX | Land Texture                              |
+|  <ul><li>[ ]</li></ul>  | ENCH | Enchantment                               |
+|  <ul><li>[ ]</li></ul>  | SPEL | Spell                                     |
+|  <ul><li>[ ]</li></ul>  | SCRL | Scroll                                    |
+|  <ul><li>[ ]</li></ul>  | ACTI | Activator                                 |
+|  <ul><li>[ ]</li></ul>  | TACT | Talking Activator                         |
+|  <ul><li>[ ]</li></ul>  | ARMO | Armor                                     |
+|  <ul><li>[ ]</li></ul>  | BOOK | Book                                      |
+|  <ul><li>[ ]</li></ul>  | CONT | Container                                 |
+|  <ul><li>[ ]</li></ul>  | DOOR | Door                                      |
+|  <ul><li>[ ]</li></ul>  | INGR | Ingredient                                |
+|  <ul><li>[ ]</li></ul>  | LIGH | Light                                     |
+|  <ul><li>[ ]</li></ul>  | MISC | Miscellaneous Object                      |
+|  <ul><li>[ ]</li></ul>  | APPA | Apparatus                                 |
+|  <ul><li>[ ]</li></ul>  | STAT | Static                                    |
+|  <ul><li>[ ]</li></ul>  | MSTT | Movable Static                            |
+|  <ul><li>[ ]</li></ul>  | GRAS | Grass                                     |
+|  <ul><li>[ ]</li></ul>  | TREE | Tree                                      |
+|  <ul><li>[ ]</li></ul>  | FLOR | Flora                                     |
+|  <ul><li>[ ]</li></ul>  | FURN | Furniture                                 |
+|  <ul><li>[ ]</li></ul>  | WEAP | Weapon                                    |
+|  <ul><li>[ ]</li></ul>  | AMMO | Ammunition                                |
+|  <ul><li>[ ]</li></ul>  | NPC_ | NPC                                       |
+|  <ul><li>[ ]</li></ul>  | LVLN | Levelled Actor                            |
+|  <ul><li>[ ]</li></ul>  | KEYM | Key                                       |
+|  <ul><li>[ ]</li></ul>  | ALCH | Potion                                    |
+|  <ul><li>[ ]</li></ul>  | IDLM | Idle Marker                               |
+|  <ul><li>[ ]</li></ul>  | COBJ | Constructible Object                      |
+|  <ul><li>[ ]</li></ul>  | PROJ | Projectile                                |
+|  <ul><li>[ ]</li></ul>  | HAZD | Hazard                                    |
+|  <ul><li>[ ]</li></ul>  | SLGM | Soul Gem                                  |
+|  <ul><li>[ ]</li></ul>  | LVLI | Leveled Item                              |
+|  <ul><li>[ ]</li></ul>  | WTHR | Weather                                   |
+|  <ul><li>[ ]</li></ul>  | CLMT | Climate                                   |
+|  <ul><li>[ ]</li></ul>  | SPGD | Shader Particle Geometry                  |
+|  <ul><li>[ ]</li></ul>  | RFCT | Visual Effect                             |
+|  <ul><li>[ ]</li></ul>  | REGN | Region                                    |
+|  <ul><li>[ ]</li></ul>  | NAVI | NavMesh                                   |
+|  <ul><li>[ ]</li></ul>  | CELL | Cell                                      |
+|  <ul><li>[ ]</li></ul>  | WRLD | Worldspace                                |
+|  <ul><li>[ ]</li></ul>  | DIAL | Dialog Branch                             |
+|  <ul><li>[ ]</li></ul>  | QUST | Quest                                     |
+|  <ul><li>[ ]</li></ul>  | IDLE | Idle Animation                            |
+|  <ul><li>[ ]</li></ul>  | PACK | AI Package                                |
 
 (Note: this table is not complete yet)
