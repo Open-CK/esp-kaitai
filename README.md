@@ -71,6 +71,15 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] DIAL</li></ul>   | Dialog Branch                             |
 |  <ul><li>[ ] QUST</li></ul>   | Quest                                     |
 |  <ul><li>[ ] IDLE</li></ul>   | Idle Animation                            |
-|  <ul><li>[ ]< PACK/li></ul>   | AI Package                                |
+|  <ul><li>[ ] PACK</li></ul>   | AI Package                                |
+|  <ul><li>[ ] CSTY</li></ul>   | Combat Style                              |
+|  <ul><li>[ ] LSCR</li></ul>   | Load Screen                               |
+|  <ul><li>[ ] LVSP</li></ul>   | Leveled Spell                             |
+|  <ul><li>[ ] ANIO</li></ul>   | Animated Object                           |
+|  <ul><li>[ ] WATR</li></ul>   | Water                                     |
+|  <ul><li>[ ] EFSH</li></ul>   | Effect Shader                             |
+|  <ul><li>[ ] EXPL</li></ul>   | Explosion                                 |
+|  <ul><li>[ ] DEBR</li></ul>   | Debris                                    |
+|  <ul><li>[ ] IMGS</li></ul>   | Image Space                               |
 
 (Note: this table is not complete yet)
