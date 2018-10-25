@@ -647,7 +647,7 @@ types:
         type: u2
         doc: Size, in bytes, of data
       - id: version
-        type: u4
+        type: u2
         doc: Version of MODT field
     seq:
       - id: modt
@@ -695,11 +695,15 @@ types:
         size: 4
       - id: unique_tex_count
         type: u4
+        if: _parent.data_size > 12
       - id: materials_count
         type: u4
+        if: _parent.data_size > 16
       - id: hashes
         type: modt_v40_texture_hash
-        repeat: eos
+        repeat: expr
+        repeat-expr: (_parent.data_size - 20) / 12
+        if: (_parent.data_size > 20)
 
   modt_v40_texture_hash:
     seq:
@@ -1531,8 +1535,8 @@ types:
             '"KSIZ"': race_ksiz_field
             '"KWDA"': race_kwda_field
             '"DATA"': race_data_field
-            '"ANAM"': race_anam_field
-            '"MODT"': generic_modt(data_size, _parent._parent.header.version)
+            '"MNAM"': race_male_model_info(_parent._parent.header.version)
+            '"FNAM"': race_female_model_info(_parent._parent.header.version)
             '"MTNM"': race_mtnm_field
             '"VTCK"': race_vtck_field
             '"DNAM"': race_dnam_field
@@ -1683,14 +1687,7 @@ types:
       - id: unknown_ints
         type: u4
         repeat: expr
-        repeat-expr: 9
-        doc: Unknown integers
-      - id: unknown_floats
-        type: f4
-        repeat: expr
-        repeat-expr: 9
-        doc: Unknown floats (only version 43 of form)
-        if: _parent._parent.header.version == 43
+        repeat-expr: _parent.data_size - 128
 
   race_data_skill:
     seq:
@@ -1715,13 +1712,67 @@ types:
         doc: Indicates non hostile race
       - type: b30  
 
-  race_anam_field:
+  race_male_model_info:
+    params:
+      - id: form_version
+        type: u2
+        doc: Version of form, specified in header
     seq:
-      - id: nif_path
+      - id: anam_type
+        contents: "ANAM"
+        doc: Start of ANAM field
+      - id: anam_data_size
+        type: u2
+        doc: Size, in bytes, of ANAM field data
+      - id: anam_field
+        type: race_anam_field(anam_data_size)
+        doc: ANAM field data
+      - id: modt_type
+        contents: "MODT"
+        doc: Start of MODT field
+      - id: modt_data_size
+        type: u2
+        doc: Size, in bytes, of MODT field data
+      - id: modt_data
+        type: generic_modt(modt_data_size, form_version)
+        doc: MODT field data
+
+  race_female_model_info:
+    params:
+      - id: form_version
+        type: u2
+        doc: Version of form, specified in header
+    seq:
+      - id: anam_type
+        contents: "ANAM"
+        doc: Start of ANAM field
+      - id: anam_data_size
+        type: u2
+        doc: Size, in bytes, of ANAM field data
+      - id: anam_field
+        type: race_anam_field(anam_data_size)
+        doc: ANAM field data
+      - id: modt_type
+        contents: "MODT"
+        doc: Start of MODT field
+      - id: modt_data_size
+        type: u2
+        doc: Size, in bytes, of MODT field data
+      - id: modt_data
+        type: generic_modt(modt_data_size, form_version)
+        doc: MODT field data
+
+  race_anam_field:
+    params:
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+    seq:
+      - id: skeleton_path
         type: strz
         encoding: UTF-8
-        size: _parent.data_size
-        doc: Relative path to .nif from Models directory
+        size: data_size
+        doc: Relative path to skeleton .nif from Models directory
 
   race_mtnm_field:
     seq:
