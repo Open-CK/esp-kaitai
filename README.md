@@ -40,7 +40,7 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] DOOR</li></ul>   | Door                                      |
 |  <ul><li>[ ] INGR</li></ul>   | Ingredient                                |
 |  <ul><li>[ ] LIGH</li></ul>   | Light                                     |
-|  <ul><li>[ ] MISC</li></ul>   | Miscellaneous Object                      |
+|  <ul><li>[ ] MISC</li></ul>   | Miscellaneous Object *(in progress)*      |
 |  <ul><li>[ ] APPA</li></ul>   | Apparatus                                 |
 |  <ul><li>[ ] STAT</li></ul>   | Static                                    |
 |  <ul><li>[ ] MSTT</li></ul>   | Movable Static                            |
