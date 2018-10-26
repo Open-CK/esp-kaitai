@@ -1584,7 +1584,15 @@ types:
             '"SPMV"': race_spmv_field
             '"INDX"': race_indx_field
             '"HEAD"': race_head_field
-            '"AMPI"': race_mpai_field
+            '"MPAI"': race_morph_information
+            '"RPRM"': race_rprm_field
+            '"AHCM"': race_ahcm_field
+            '"FTSM"': race_ftsm_field
+            '"DFTM"': race_dftm_field
+            '"RPRF"': race_rprf_field
+            '"AHCF"': race_ahcf_field
+            '"FTSF"': race_ftsf_field
+            '"DFTF"': race_dftf_field
             _: unknown_field_data(data_size)
 
   race_full_field:
@@ -2166,11 +2174,398 @@ types:
         type: u4
         doc: FormID of associated default HDPT form
 
-  race_mpai_field:
+  race_morph_information:
     seq:
+      - id: mpai_nose
+        type: race_mpai_field(1)
+        doc: MPAI field 1 (nose)
+      - id: mpav_nose
+        type: race_mpav_field(1)
+        doc: MPAV field 1 (nose)
+      - id: mpai_brow
+        type: race_mpai_field(0)
+        doc: MPAI field 2 (brow)
+      - id: mpav_brow
+        type: race_mpav_field(2)
+        doc: MPAV field 2 (brow)
+      - id: mpai_eyes
+        type: race_mpai_field(0)
+        doc: MPAI field 3 (eyes)
+      - id: mpav_eyes
+        type: race_mpav_field(3)
+        doc: MPAV field 3 (eyes)
+      - id: mpai_lip
+        type: race_mpai_field(0)
+        doc: MPAI field 4 (lips)
+      - id: mpav_lip
+        type: race_mpav_field(4)
+        doc: MPAV field 4 (lip)
+
+  race_mpai_field:
+    params:
+      - id: first_field
+        type: u1
+        doc: Indicates first appearance of this field
+    seq:
+      - id: type
+        contents: "MPAI"
+        doc: MPAI type code
+        if: first_field == 0
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of MPAI field data (minus header)
+        if: first_field == 0
       - id: available_morph_index
         type: u4
         doc: Available morph index
+
+  race_mpav_field:
+    params:
+      - id: occurence
+        type: u1
+        doc: Number of field occurence
+    seq:
+      - id: type
+        contents: "MPAV"
+        doc: MPAV type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of MPAV field (minus header)
+      - id: flags
+        type:
+          switch-on: occurence
+          cases:
+            1: mpav_nose_flags
+            2: mpav_brow_flags
+            3: mpav_eye_flags
+            4: mpav_lip_flags
+        doc: Morph flags
+
+  mpav_nose_flags:
+    seq:
+      - id: nose_type_0
+        type: b1
+      - id: nose_type_1
+        type: b1
+      - id: nose_type_2
+        type: b1
+      - id: nose_type_3
+        type: b1
+      - id: nose_type_4
+        type: b1
+      - id: nose_type_5
+        type: b1
+      - id: nose_type_6
+        type: b1
+      - id: nose_type_7
+        type: b1
+      - id: nose_type_8
+        type: b1
+      - id: nose_type_9
+        type: b1
+      - id: nose_type_10
+        type: b1
+      - id: nose_type_11
+        type: b1
+      - id: nose_type_12
+        type: b1
+      - id: nose_type_13
+        type: b1
+      - id: nose_type_14
+        type: b1
+      - id: nose_type_15
+        type: b1
+      - id: nose_type_16
+        type: b1
+      - id: nose_type_17
+        type: b1
+      - id: nose_type_18
+        type: b1
+      - id: nose_type_19
+        type: b1
+      - id: nose_type_20
+        type: b1
+      - id: nose_type_21
+        type: b1
+      - id: nose_type_22
+        type: b1
+      - id: nose_type_23
+        type: b1
+      - id: nose_type_24
+        type: b1
+      - id: nose_type_25
+        type: b1
+      - id: nose_type_26
+        type: b1
+      - id: nose_type_27
+        type: b1
+      - id: nose_type_28
+        type: b1
+      - id: nose_type_29
+        type: b1
+      - id: nose_type_30
+        type: b1
+      - id: nose_type_31
+        type: b1
+      - id: unknown
+        type: u4
+        repeat: expr
+        repeat-expr: 7
+
+  mpav_brow_flags:
+    seq:
+      - id: brow_type_0
+        type: b1
+      - id: brow_type_1
+        type: b1
+      - id: brow_type_2
+        type: b1
+      - id: brow_type_3
+        type: b1
+      - id: brow_type_4
+        type: b1
+      - id: brow_type_5
+        type: b1
+      - id: brow_type_6
+        type: b1
+      - id: brow_type_7
+        type: b1
+      - id: brow_type_8
+        type: b1
+      - id: brow_type_9
+        type: b1
+      - id: brow_type_10
+        type: b1
+      - id: brow_type_11
+        type: b1
+      - id: brow_type_12
+        type: b1
+      - id: brow_type_13
+        type: b1
+      - id: brow_type_14
+        type: b1
+      - id: brow_type_15
+        type: b1
+      - id: brow_type_16
+        type: b1
+      - id: brow_type_17
+        type: b1
+      - id: brow_type_18
+        type: b1
+      - id: brow_type_19
+        type: b1
+      - id: brow_type_20
+        type: b1
+      - type: b11
+      - id: unknown
+        type: u4
+        repeat: expr
+        repeat-expr: 7
+
+  mpav_eye_flags:
+    seq:
+      - id: eye_type_0
+        type: b1
+      - id: eye_type_1
+        type: b1
+      - id: eye_type_2
+        type: b1
+      - id: eye_type_3
+        type: b1
+      - id: eye_type_4
+        type: b1
+      - id: eye_type_5
+        type: b1
+      - id: eye_type_6
+        type: b1
+      - id: eye_type_7
+        type: b1
+      - id: eye_type_8
+        type: b1
+      - id: eye_type_9
+        type: b1
+      - id: eye_type_10
+        type: b1
+      - id: eye_type_11
+        type: b1
+      - id: eye_type_12
+        type: b1
+      - id: eye_type_13
+        type: b1
+      - id: eye_type_14
+        type: b1
+      - id: eye_type_15
+        type: b1
+      - id: eye_type_16
+        type: b1
+      - id: eye_type_17
+        type: b1
+      - id: eye_type_18
+        type: b1
+      - id: eye_type_19
+        type: b1
+      - id: eye_type_20
+        type: b1
+      - id: eye_type_21
+        type: b1
+      - id: eye_type_22
+        type: b1
+      - id: eye_type_23
+        type: b1
+      - id: eye_type_24
+        type: b1
+      - id: eye_type_25
+        type: b1
+      - id: eye_type_26
+        type: b1
+      - id: eye_type_27
+        type: b1
+      - id: eye_type_28
+        type: b1
+      - id: eye_type_29
+        type: b1
+      - id: eye_type_30
+        type: b1
+      - id: eye_type_31
+        type: b1
+      - id: eye_type_32
+        type: b1
+      - id: eye_type_33
+        type: b1
+      - id: eye_type_34
+        type: b1
+      - id: eye_type_35
+        type: b1
+      - id: eye_type_36
+        type: b1
+      - id: eye_type_37
+        type: b1
+      - id: eye_type_38
+        type: b1
+      - type: b25
+      - id: unknown
+        type: u4
+        repeat: expr
+        repeat-expr: 6
+
+  mpav_lip_flags:
+    seq:
+      - id: lip_type_0
+        type: b1
+      - id: lip_type_1
+        type: b1
+      - id: lip_type_2
+        type: b1
+      - id: lip_type_3
+        type: b1
+      - id: lip_type_4
+        type: b1
+      - id: lip_type_5
+        type: b1
+      - id: lip_type_6
+        type: b1
+      - id: lip_type_7
+        type: b1
+      - id: lip_type_8
+        type: b1
+      - id: lip_type_9
+        type: b1
+      - id: lip_type_10
+        type: b1
+      - id: lip_type_11
+        type: b1
+      - id: lip_type_12
+        type: b1
+      - id: lip_type_13
+        type: b1
+      - id: lip_type_14
+        type: b1
+      - id: lip_type_15
+        type: b1
+      - id: lip_type_16
+        type: b1
+      - id: lip_type_17
+        type: b1
+      - id: lip_type_18
+        type: b1
+      - id: lip_type_19
+        type: b1
+      - id: lip_type_20
+        type: b1
+      - id: lip_type_21
+        type: b1
+      - id: lip_type_22
+        type: b1
+      - id: lip_type_23
+        type: b1
+      - id: lip_type_24
+        type: b1
+      - id: lip_type_25
+        type: b1
+      - id: lip_type_26
+        type: b1
+      - id: lip_type_27
+        type: b1
+      - id: lip_type_28
+        type: b1
+      - id: lip_type_29
+        type: b1
+      - id: lip_type_30
+        type: b1
+      - id: lip_type_31
+        type: b1
+      - id: unknown
+        type: u4
+        repeat: expr
+        repeat-expr: 7
+        
+  race_rprm_field:
+    seq:
+      - id: preset_male_npc
+        type: u4
+        doc: FormID of associated NPC_ form
+  
+  race_ahcm_field:
+    seq:
+      - id: available_hair_color_male
+        type: u4
+        doc: FormID of associated CLFM form
+
+  race_ftsm_field:
+    seq:
+      - id: face_details_textureset_male
+        type: u4
+        doc: FormID of associated TXST form
+
+  race_dftm_field:
+    seq:
+      - id: default_face_texture_male
+        type: u4
+        doc: FormID of associated TXST form
+
+  race_rprf_field:
+    seq:
+      - id: preset_npc_female
+        type: u4
+        doc: FormID of associated NPC_ form
+  
+  race_ahcf_field:
+    seq:
+      - id: available_hair_color_female
+        type: u4
+        doc: FormID of associated CLFM form
+
+  race_ftsf_field:
+    seq:
+      - id: face_details_textureset_female
+        type: u4
+        doc: FormID of associated TXST form
+
+  race_dftf_field:
+    seq:
+      - id: default_face_texture_female
+        type: u4
+        doc: FormID of associated TXST form
 
 ###############################################################################
 #                               SOUND (SOUN) FORM                             #
