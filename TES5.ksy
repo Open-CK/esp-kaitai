@@ -1563,6 +1563,28 @@ types:
             '"INDX"': race_indx_field
             '"MODL"': race_modl_field
             '"GNAM"': race_gnam_field
+            '"NAM4"': race_nam4_field
+            '"NAM5"': race_nam5_field
+            '"NAM7"': race_nam7_field
+            '"ONAM"': race_onam_field
+            '"LNAM"': race_lnam_field
+            '"NAME"': race_name_field
+            '"MTYP"': race_mtyp_field
+            '"SPED"': race_sped_field
+            '"VNAM"': race_vnam_field
+            '"QNAM"': race_qnam_field
+            '"UNES"': race_unes_field
+            '"PHTN"': race_phtn_field
+            '"PHWT"': race_phwt_field
+            '"WKMV"': race_wkmv_field
+            '"RNMV"': race_rnmv_field
+            '"SWMV"': race_swmv_field
+            '"FLMV"': race_flmv_field
+            '"SNMV"': race_snmv_field
+            '"SPMV"': race_spmv_field
+            '"INDX"': race_indx_field
+            '"HEAD"': race_head_field
+            '"AMPI"': race_mpai_field
             _: unknown_field_data(data_size)
 
   race_full_field:
@@ -1869,6 +1891,286 @@ types:
       - id: body_part_data
         type: u4
         doc: FormID of associated BPTD
+
+  race_nam4_field:
+    seq:
+      - id: material_type
+        type: u4
+        doc: FormID of associated MATT
+
+  race_nam5_field:
+    seq:
+      - id: impact_data_set
+        type: u4
+        doc: FormID of associated unarmed IDPS
+
+  race_nam7_field:
+    seq:
+      - id: decapitation_fx
+        type: u4
+        doc: FormID of associated blood fx ARTO (if race can be decapitated)
+
+  race_onam_field:
+    seq:
+      - id: open_loot_sound
+        type: u4
+        doc: FormID of associated SNDR for opening as loot
+
+  race_lnam_field:
+    seq:
+      - id: close_loot_sound
+        type: u4
+        doc: FormID of associated SNDR for closing as loot
+
+  race_name_field:
+    seq:
+      - id: biped_object_name
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Name of biped object, can be set in CK
+
+  race_mtyp_field:
+    seq:
+      - id: movement_type
+        type: u4
+        doc: FormID of associated MOVT form
+
+  race_sped_field:
+    seq:
+      - id: left_walk
+        type: f4
+        doc: Left walk speed override
+      - id: left_run
+        type: f4
+        doc: Left run speed override
+      - id: right_walk
+        type: f4
+        doc: Right walk speed override
+      - id: right_run
+        type: f4
+        doc: Right run speed override
+      - id: forward_walk
+        type: f4
+        doc: Forward walk speed override
+      - id: forward_run
+        type: f4
+        doc: Forward run speed override
+      - id: back_walk
+        type: f4
+        doc: Back walk speed override
+      - id: back_run
+        type: f4
+        doc: Back run speed override
+      - id: rotate_walk_1
+        type: f4
+        doc: Rotate walk speed override
+      - id: rotate_walk_2
+        type: f4
+        doc: Rotate walk speed override
+      - id: unknown
+        type: f4
+        doc: Unknown floating point value
+
+  race_vnam_field:
+    seq:
+      - id: equipment_flags
+        type: race_vnam_equipment_flags
+        doc: Race equipment flags
+
+  race_vnam_equipment_flags:
+    seq:
+      - id: hand_to_hand
+        type: b1
+      - id: one_h_sword
+        type: b1
+      - id: one_h_dagger
+        type: b1
+      - id: one_h_axe
+        type: b1
+      - id: one_h_mace
+        type: b1
+      - id: two_h_sword
+        type: b1
+      - id: two_h_axe
+        type: b1
+      - id: bow
+        type: b1
+      - id: staff
+        type: b1
+      - id: spell
+        type: b1
+      - id: shield
+        type: b1
+      - id: torch
+        type: b1
+      - id: crossbow
+        type: b1
+      - type: b19
+
+  race_qnam_field:
+    seq:
+      - id: equip_slot
+        type: u4
+        doc: FormID of associated EQUP
+
+  race_unes_field:
+    seq:
+      - id: unarmed_equip_slot
+        type: u4
+        doc: FormID of associated EQUP for unarmed
+
+  race_phtn_field:
+    seq:
+      - id: phoneme_target_name
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Phoneme target name
+
+  race_phwt_field:
+    seq:
+      - id: phoneme_weights_dragon
+        type: race_phwt_weights_dragon
+        if: _parent.data_size == 32
+        doc: Dragon-unique phoneme weights
+      - id: phoneme_weights
+        type: race_phwt_weights
+        if: _parent.data_size == 64
+        doc: Phoneme weights
+
+  race_phwt_weights_dragon:
+    seq:
+      - id: lip_big_aah
+        type: f4
+        doc: Lip big aah
+      - id: lip_dst
+        type: f4
+        doc: Lip D/S/T
+      - id: lip_eee
+        type: f4
+        doc: Lip eee
+      - id: lip_fv
+        type: f4
+        doc: Lip F/V
+      - id: lip_k
+        type: f4
+        doc: Lip K
+      - id: lip_l
+        type: f4
+        doc: Lip L
+      - id: lip_r
+        type: f4
+        doc: Lip R
+      - id: lip_th
+        type: f4
+        doc: Lip Th
+
+  race_phwt_weights:
+    seq:
+      - id: aah
+        type: f4
+        doc: Aah
+      - id: big_aah
+        type: f4
+        doc: Big aah
+      - id: bmp
+        type: f4
+        doc: B/M/P
+      - id: ch_j_sh
+        type: f4
+        doc: Ch/J/Sh
+      - id: dst
+        type: f4
+        doc: D/S/T
+      - id: eee
+        type: f4
+        doc: Eee
+      - id: eh
+        type: f4
+        doc: Eh
+      - id: fv
+        type: f4
+        doc: F/V
+      - id: i
+        type: f4
+        doc: I
+      - id: k
+        type: f4
+        doc: K
+      - id: n
+        type: f4
+        doc: N
+      - id: oh
+        type: f4
+        doc: Oh
+      - id: ooh_q
+        type: f4
+        doc: Ooh/Q
+      - id: r
+        type: f4
+        doc: R
+      - id: th
+        type: f4
+        doc: Th
+      - id: w
+        type: f4
+        doc: W
+
+  race_wkmv_field:
+    seq:
+      - id: default_walk
+        type: u4
+        doc: FormID of associated MOVT form for walk behaviour
+
+  race_rnmv_field:
+    seq:
+      - id: default_run
+        type: u4
+        doc: FormID of associated MOVT form for run behaviour
+
+  race_swmv_field:
+    seq:
+      - id: default_swim
+        type: u4
+        doc: FormID of associated MOVT form for swim behaviour
+
+  race_flmv_field:
+    seq:
+      - id: default_fly
+        type: u4
+        doc: FormID of associated MOVT form for fly behaviour
+
+  race_snmv_field:
+    seq:
+      - id: default_sneak
+        type: u4
+        doc: FormID of associated MOVT form for sneak behaviour
+
+  race_spmv_field:
+    seq:
+      - id: default_sprint
+        type: u4
+        doc: FormID of associated MOVT form for sprint behaviour
+
+  race_indx_field:
+    seq:
+      - id: index
+        type: u4
+        if: _parent.data_size > 0
+        doc: List index
+
+  race_head_field:
+    seq:
+      - id: default_head_part
+        type: u4
+        doc: FormID of associated default HDPT form
+
+  race_mpai_field:
+    seq:
+      - id: available_morph_index
+        type: u4
+        doc: Available morph index
 
 ###############################################################################
 #                               SOUND (SOUN) FORM                             #
