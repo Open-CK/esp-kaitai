@@ -964,7 +964,7 @@ types:
         doc: Alpha blending
       - id: alpha_testing
         type: b1
-        id: Alpha testing
+        doc: Alpha testing
       - id: not_4_subtextures
         type: b1
       - type: b4
