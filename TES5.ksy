@@ -86,7 +86,30 @@ enums:
     1: medium
     2: large
     4: extra_large
-    
+
+  race_tinp_mask_type:
+    0: none
+    1: lip_color
+    2: cheek_color
+    3: eyeliner
+    4: eye_socket_upper
+    5: eye_socket_lower
+    6: skin_tone
+    7: paint
+    8: laugh_lines
+    9: cheek_color_lower
+    10: nose
+    11: chin
+    12: neck
+    13: forehead
+    14: dirt
+    15: unknown
+
+  bodt_skill:
+    0: light_armor
+    1: heavy_armor
+    2: none
+
 ###############################################################################
 #                             TYPE DEFINITIONS                                #
 ###############################################################################
@@ -734,15 +757,94 @@ types:
         doc: Size, in bytes, of data
     seq:
       - id: node_flags
-        type: u4
-        doc: Body part node flags (TODO)
+        type: bodt_node_flags
+        doc: Body part node flags
       - id: flags
-        type: u4
+        type: bodt_flags
         doc: Further flags
       - id: skill
         type: u4
+        enum: bodt_skill
         doc: Corresponding skill (heavy or light armor)
         if: data_size == 12
+
+  bodt_node_flags:
+    seq:
+      - id: head
+        type: b1
+      - id: hair
+        type: b1
+      - id: body
+        type: b1
+      - id: hands
+        type: b1
+      - id: forearms
+        type: b1
+      - id: amulet
+        type: b1
+      - id: ring
+        type: b1
+      - id: feet
+        type: b1
+      - id: calves
+        type: b1
+      - id: shield
+        type: b1
+      - id: tail
+        type: b1
+      - id: long_hair
+        type: b1
+      - id: circlet
+        type: b1
+      - id: ears
+        type: b1
+      - id: body_addon_3
+        type: b1
+      - id: body_addon_4
+        type: b1
+      - id: body_addon_5
+        type: b1
+      - id: body_addon_6
+        type: b1
+      - id: body_addon_7
+        type: b1
+      - id: body_addon_8
+        type: b1
+      - id: decapitate_head
+        type: b1
+      - id: decapitate
+        type: b1
+      - id: body_addon_9
+        type: b1
+      - id: body_addon_10
+        type: b1
+      - id: body_addon_11
+        type: b1
+      - id: body_addon_12
+        type: b1
+      - id: body_addon_13
+        type: b1
+      - id: body_addon_14
+        type: b1
+      - id: body_addon_15
+        type: b1
+      - id: body_addon_16
+        type: b1
+      - id: body_addon_17
+        type: b1
+      - id: fx01
+        type: b1
+
+  bodt_flags:
+    seq:
+      - id: modulate_voice
+        type: b1
+      - type: b3
+      - id: non_playable
+        type: b1
+      - type: b27
+
+  
 
 ###############################################################################
 #                           GMST (GAME SETTING) FORM                          #
@@ -1593,6 +1695,15 @@ types:
             '"AHCF"': race_ahcf_field
             '"FTSF"': race_ftsf_field
             '"DFTF"': race_dftf_field
+            '"TINI"': race_tini_field
+            '"TINT"': race_tint_field
+            '"TINP"': race_tinp_field
+            '"TIND"': race_tind_field
+            '"TINC"': race_tinc_field
+            '"TINV"': race_tinv_field
+            '"TIRS"': race_tirs_field
+            '"NAM8"': race_nam8_field
+            '"RNAM"': race_rnam_field
             _: unknown_field_data(data_size)
 
   race_full_field:
@@ -1748,7 +1859,74 @@ types:
     seq:
       - id: flags
         type: u4
-        doc: Racial flags (TODO)
+        doc: Racial flags
+  
+  race_data_flags:
+    seq:
+      - id: playable
+        type: b1
+      - id: facegen_head
+        type: b1
+      - id: child
+        type: b1
+      - id: tilt_front_back
+        type: b1
+      - id: tilt_left_right
+        type: b1
+      - id: no_shadow
+        type: b1
+      - id: swims
+        type: b1
+      - id: flies
+        type: b1
+      - id: walks
+        type: b1
+      - id: immobile
+        type: b1
+      - id: not_pushable
+        type: b1
+      - id: no_combat_in_water
+        type: b1
+      - id: no_rotating_to_head_track
+        type: b1
+      - id: dont_show_blood_spray
+        type: b1
+      - id: dont_show_blood_decal
+        type: b1
+      - id: uses_head_track_anims
+        type: b1
+      - id: spells_align_with_magic_node
+        type: b1
+      - id: use_world_raycasts_for_foot_ik
+        type: b1
+      - id: allow_ragdoll_collision
+        type: b1
+      - id: regen_hp_in_combat
+        type: b1
+      - id: cant_open_doors
+        type: b1
+      - id: allow_pc_dialogue
+        type: b1
+      - id: no_knockdowns
+        type: b1
+      - id: allow_pickpocket
+        type: b1
+      - id: always_use_proxy_controller
+        type: b1
+      - id: dont_show_weapon_blood
+        type: b1
+      - id: overlay_head_part_list
+        type: b1
+      - id: override_head_part_list
+        type: b1
+      - id: can_pick_up_items
+        type: b1
+      - id: allow_multiple_membrane_shaders
+        type: b1
+      - id: can_dual_weild
+        type: b1
+      - id: avoids_roads
+        type: b1
 
   race_data_hostile_flags:
     seq:
@@ -2566,6 +2744,63 @@ types:
       - id: default_face_texture_female
         type: u4
         doc: FormID of associated TXST form
+
+  race_tini_field:
+    seq:
+      - id: tint_index
+        type: u2
+        doc: Ascending record index
+
+  race_tint_field:
+    seq:
+      - id: tint_mask
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Path to tint mask .dds
+
+  race_tinp_field:
+    seq:
+      - id: mask_type
+        type: u2
+        enum: race_tinp_mask_type
+        doc: Tint mask type
+
+  race_tind_field:
+    seq:
+      - id: preset_default
+        type: u4
+        doc: Default preset default color FormID (CLFM)
+
+  race_tinc_field:
+    seq:
+      - id: preset
+        type: u4
+        doc: Preset color FormID (CLFM)
+
+  race_tinv_field:
+    seq:
+      - id: default_value
+        type: f4
+        doc: Default value of preceding TINC field
+
+  race_tirs_field:
+    seq:
+      - id: index
+        type: u2
+        doc: Number of tint
+
+  race_nam8_field:
+    seq:
+      - id: morph_race
+        type: u4
+        doc: Morph RACE FormID
+
+  race_rnam_field:
+    seq:
+      - id: armor_race
+        type: u4
+        doc: Armor race FormID
 
 ###############################################################################
 #                               SOUND (SOUN) FORM                             #

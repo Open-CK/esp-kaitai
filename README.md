@@ -23,7 +23,7 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[x] FACT</li></ul>   | Faction                                   |
 |  <ul><li>[x] HDPT</li></ul>   | Head Part                                 |
 |  <ul><li>[x] EYES</li></ul>   | Eyes                                      |
-|  <ul><li>[ ] RACE</li></ul>   | Race *(in progress)*                      |
+|  <ul><li>[x] RACE</li></ul>   | Race                                      |
 |  <ul><li>[x] SOUN</li></ul>   | Sound                                     |
 |  <ul><li>[x] ASPC</li></ul>   | Acoustic Space                            |
 |  <ul><li>[ ] MGEF</li></ul>   | Magic Effect                              |
@@ -81,5 +81,13 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] EXPL</li></ul>   | Explosion                                 |
 |  <ul><li>[ ] DEBR</li></ul>   | Debris                                    |
 |  <ul><li>[ ] IMGS</li></ul>   | Image Space                               |
+|  <ul><li>[ ] IMAD</li></ul>   | Image Space Modifier                      |
+|  <ul><li>[ ] FLST</li></ul>   | Form List (non-leveled)                   |
+|  <ul><li>[ ] PERK</li></ul>   | Perk                                      |
+|  <ul><li>[ ] BPTD</li></ul>   | Body Part Data                            |
+|  <ul><li>[ ] ADDN</li></ul>   | Addon Node                                |
+|  <ul><li>[ ] AVIF</li></ul>   | Actor Values/Perk Tree Graphics           |
+|  <ul><li>[ ] CAMS</li></ul>   | Camera Shot                               |
+|  <ul><li>[ ] CPTH</li></ul>   | Camera Path                               |
 
 (Note: this table is not complete yet)
