@@ -490,7 +490,9 @@ types:
             '"SOUN"': soun_form
             '"ASPC"': aspc_form
             '"LTEX"': ltex_form
+            '"CLMT"': clmt_form
             '"SPGD"': spgd_form
+            '"RFCT"': rfct_form
             _: unknown_form_data
         doc: Fields contained by form
 
@@ -2973,9 +2975,95 @@ types:
         doc: Form ID of associated GRAS form
 
 ###############################################################################
+#                               CLIMATE (CLMT) FORM                           #
+###############################################################################
+  clmt_form:
+    seq:
+      - id: fields
+        type: clmt_field
+        repeat: eos
+        doc: Fields contained by CLMT form
+
+  clmt_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"WLST"': clmt_wlst_field
+            '"FNAM"': clmt_fnam_field
+            '"GNAM"': clmt_gnam_field
+            '"TNAM"': clmt_tnam_field
+            '"MODL"': unknown_field_data        #TODO: MODL field
+        doc: Fields contained by CLMT form
+
+  clmt_wlst_field:
+    seq:
+      - id: weather
+        type: u4
+        doc: Weather (WTHR) FormID
+      - id: percent_chance
+        type: u4
+        doc: Chance of weather in percent
+      - id: global_variable
+        type: u4
+        doc: Global variable (GLOB) FormID
+
+  clmt_fnam_field:
+    seq:
+      - id: sun_texture
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Path to sun texture
+
+  clmt_gnam_field:
+    seq:
+      - id: glare_texture
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Path to glare texture
+
+  clmt_tnam_field:
+    seq:
+      - id: sunrise_begin
+        type: u1
+        doc: Sunrise begin (times 10 minutes)
+      - id: sunrise_end
+        type: u1
+        doc: Sunrise end (times 10 minutes)
+      - id: sunset_begin
+        type: u1
+        doc: Sunset begin (times 10 minutes)
+      - id: sunset_end
+        type: u1
+        doc: Sunset end (times 10 minutes)
+      - id: volatility
+        type: u1
+        doc: Volatility
+      - id: moon_phase
+        type: b6
+        doc: Moon phase length in days
+      - id: masser_flag
+        type: b1
+        doc: Masser present flag
+      - id: secunda_flag
+        type: b1
+        doc: Secunda_present_flag
+
+###############################################################################
 #                      SHADER PARTICLE GEOMETRY (SPGD) FORM                   #
 ###############################################################################
-
   spgd_form:
     seq:
       - id: fields
@@ -3000,6 +3088,7 @@ types:
             '"EDID"': edid_field(data_size)
             '"DATA"': spgd_data_field
             '"ICON"': spgd_icon_field
+        doc: Fields contained by SPGD form
 
   spgd_data_field:
     seq:
@@ -3050,3 +3139,252 @@ types:
         encoding: UTF-8
         size: _parent.data_size
         doc: Path to particle texture
+
+###############################################################################
+#                            VISUAL EFFECT (RFCT) FORM                        #
+###############################################################################
+  rfct_form:
+    seq:
+      - id: fields
+        type: rfct_field
+        repeat: eos
+        doc: Fields contained by RFCT form
+  
+  rfct_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u4
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"DATA"': rfct_data_field
+  
+  rfct_data_field:
+    seq:
+      - id: effect_art
+        type: u4
+        doc: Effect art object (ARTO) FormID
+      - id: shader
+        type: u4
+        doc: Effect shader (EFSH) FormID
+      - id: flags
+        type: rfct_data_flags
+        doc: Effect flags
+    
+  rfct_data_flags:
+    seq:
+      - id: rotate_to_face_target
+        type: b1
+      - id: attach_to_camera
+        type: b1
+      - id: inherit_rotation
+        type: b1
+      - type: b29
+
+###############################################################################
+#                           EFFECT SHADER (EFSH) FORM                         #
+###############################################################################
+  efsh_form:
+    seq:
+      - id: fields
+        type: efsh_field
+        repeat: eos
+        doc: Fields contained by EFSH form
+  
+  efsh_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u4
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"ICON"': efsh_icon_field
+            '"ICO2"': efsh_ico2_field
+            '"NAM7"': efsh_nam7_field
+            '"NAM8"': efsh_nam8_field
+            '"NAM9"': efsh_nam9_field
+            '"DATA"': unknown_field_data        #TODO (look at TES5Edit for this one)
+
+  efsh_icon_field:
+    seq:
+      - id: start_effect
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Path to start effect .dds
+  
+  efsh_ico2_field:
+    seq:
+      - id: looped_effect
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Path to looped effect .dds
+
+  efsh_nam7_field:
+    seq:
+      - id: post_effect
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Path to post effect .dds
+
+  efsh_nam8_field:
+    seq:
+      - id: looped_gradient
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Path to looped gradient .dds
+
+  efsh_nam9_field:
+    seq:
+      - id: end_gradient
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Path to end_gradient .dds
+
+###############################################################################
+#                            LOAD SCREEN (LSCR) FORM                          #
+###############################################################################
+  lscr_form:
+    seq:
+      - id: fields
+        type: lscr_field
+        repeat: eos
+        doc: Fields contained by LSCR form
+  
+  lscr_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u4
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"DESC"': lscr_desc_field
+            '"CTDA"': ctda_field
+            '"NNAM"': lscr_nnam_field
+            '"SNAM"': lscr_snam_field
+            '"RNAM"': lscr_rnam_field
+            '"ONAM"': lscr_onam_field
+            '"XNAM"': lscr_xnam_field
+            '"MOD2"': lscr_mod2_field
+        doc: Fields contained by LSCR form
+
+  lscr_desc_field:
+    seq:
+      - id: screen_text
+        type: lstring(_parent.data_size)
+        doc: Text displayed on load screen
+
+  lscr_nnam_field:
+    seq:
+      - id: screen_model
+        type: u4
+        doc: Static model (STAT) FormID
+  
+  lscr_snam_field:
+    seq:
+      - id: initial_scale
+        type: f4
+        doc: Initial scale of screen model
+
+  lscr_rnam_field:
+    seq:
+      - id: initial_rotation_x
+        type: u2
+        doc: Initial model rotation X
+      - id: initial_rotation_y
+        type: u2
+        doc: Initial model rotation Y
+      - id: initial_rotation_z
+        type: u2
+        doc: Initial model rotation Z
+  
+  lscr_onam_field:
+    seq:
+      - id: min_rotation
+        type: u2
+        doc: Minimum model rotation
+      - id: max_rotation
+        type: u2
+        doc: Maximum model rotation
+  
+  lscr_xnam_field:
+    seq:
+      - id: initial_offset_x
+        type: u2
+        doc: Initial model offset X
+      - id: initial_offset_y
+        type: u2
+        doc: Initial model offset Y
+      - id: initial_offset_z
+        type: u2
+        doc: Initial model offset Z
+
+  lscr_mod2_field:
+    seq:
+      - id: camera_path
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Path to camera .nif
+
+###############################################################################
+#                             FORM LIST (FLST) FORM                           #
+###############################################################################
+  flst_form:
+    seq:
+      - id: fields
+        type: flst_field
+        repeat: eos
+        doc: Fields contained by FLST form
+  
+  flst_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u4
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"LNAM"': flst_lnam_field
+        doc: Fields contained by FLST form
+
+  flst_lnam_field:
+    seq:
+      - id: object
+        type: u4
+        doc: FormID belonging to form list

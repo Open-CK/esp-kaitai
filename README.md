@@ -61,28 +61,28 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] SLGM</li></ul>   | Soul Gem                                  |
 |  <ul><li>[ ] LVLI</li></ul>   | Leveled Item                              |
 |  <ul><li>[ ] WTHR</li></ul>   | Weather                                   |
-|  <ul><li>[ ] CLMT</li></ul>   | Climate                                   |
+|  <ul><li>[ ] CLMT</li></ul>   | Climate *(in progress)*                   |
 |  <ul><li>[x] SPGD</li></ul>   | Shader Particle Geometry                  |
-|  <ul><li>[ ] RFCT</li></ul>   | Visual Effect                             |
+|  <ul><li>[x] RFCT</li></ul>   | Visual Effect                             |
 |  <ul><li>[ ] REGN</li></ul>   | Region                                    |
 |  <ul><li>[ ] NAVI</li></ul>   | NavMesh                                   |
 |  <ul><li>[ ] CELL</li></ul>   | Cell                                      |
 |  <ul><li>[ ] WRLD</li></ul>   | Worldspace                                |
-|  <ul><li>[ ] DIAL</li></ul>   | Dialog Branch                             |
+|  <ul><li>[ ] DIAL</li></ul>   | Dialog Topic                              |
 |  <ul><li>[ ] QUST</li></ul>   | Quest                                     |
 |  <ul><li>[ ] IDLE</li></ul>   | Idle Animation                            |
 |  <ul><li>[ ] PACK</li></ul>   | AI Package                                |
 |  <ul><li>[ ] CSTY</li></ul>   | Combat Style                              |
-|  <ul><li>[ ] LSCR</li></ul>   | Load Screen                               |
+|  <ul><li>[x] LSCR</li></ul>   | Load Screen                               |
 |  <ul><li>[ ] LVSP</li></ul>   | Leveled Spell                             |
 |  <ul><li>[ ] ANIO</li></ul>   | Animated Object                           |
 |  <ul><li>[ ] WATR</li></ul>   | Water                                     |
-|  <ul><li>[ ] EFSH</li></ul>   | Effect Shader                             |
+|  <ul><li>[ ] EFSH</li></ul>   | Effect Shader *(in progress)*             |
 |  <ul><li>[ ] EXPL</li></ul>   | Explosion                                 |
 |  <ul><li>[ ] DEBR</li></ul>   | Debris                                    |
 |  <ul><li>[ ] IMGS</li></ul>   | Image Space                               |
 |  <ul><li>[ ] IMAD</li></ul>   | Image Space Modifier                      |
-|  <ul><li>[ ] FLST</li></ul>   | Form List (non-leveled)                   |
+|  <ul><li>[x] FLST</li></ul>   | Form List (non-leveled)                   |
 |  <ul><li>[ ] PERK</li></ul>   | Perk                                      |
 |  <ul><li>[ ] BPTD</li></ul>   | Body Part Data                            |
 |  <ul><li>[ ] ADDN</li></ul>   | Addon Node                                |
