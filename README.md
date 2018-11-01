@@ -62,7 +62,7 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] LVLI</li></ul>   | Leveled Item                              |
 |  <ul><li>[ ] WTHR</li></ul>   | Weather                                   |
 |  <ul><li>[ ] CLMT</li></ul>   | Climate                                   |
-|  <ul><li>[ ] SPGD</li></ul>   | Shader Particle Geometry                  |
+|  <ul><li>[x] SPGD</li></ul>   | Shader Particle Geometry                  |
 |  <ul><li>[ ] RFCT</li></ul>   | Visual Effect                             |
 |  <ul><li>[ ] REGN</li></ul>   | Region                                    |
 |  <ul><li>[ ] NAVI</li></ul>   | NavMesh                                   |

@@ -110,6 +110,10 @@ enums:
     1: heavy_armor
     2: none
 
+  spgd_data_shader_type:
+    0: rain
+    1: snow_dust_fog
+
 ###############################################################################
 #                             TYPE DEFINITIONS                                #
 ###############################################################################
@@ -486,6 +490,7 @@ types:
             '"SOUN"': soun_form
             '"ASPC"': aspc_form
             '"LTEX"': ltex_form
+            '"SPGD"': spgd_form
             _: unknown_form_data
         doc: Fields contained by form
 
@@ -2966,3 +2971,82 @@ types:
       - id: grass
         type: u4
         doc: Form ID of associated GRAS form
+
+###############################################################################
+#                      SHADER PARTICLE GEOMETRY (SPGD) FORM                   #
+###############################################################################
+
+  spgd_form:
+    seq:
+      - id: fields
+        type: spgd_field
+        repeat: eos
+        doc: Fields contained by SPGD form
+  
+  spgd_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u4
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"DATA"': spgd_data_field
+            '"ICON"': spgd_icon_field
+
+  spgd_data_field:
+    seq:
+      - id: gravity_velocity
+        type: f4
+        doc: Gravity velocity
+      - id: rotation_velocity
+        type: f4
+        doc: Rotation velocity
+      - id: particle_size_x
+        type: f4
+        doc: Particle size X
+      - id: particle_size_y
+        type: f4
+        doc: Particle size Y
+      - id: center_offset_min
+        type: f4
+        doc: Center offset min
+      - id: center_offset_max
+        type: f4
+        doc: Center offset max
+      - id: initial_rotation_range
+        type: f4
+        doc: Initial rotation range
+      - id: n_subtextures_x
+        type: u4
+        doc: Number of subtextures (X)
+      - id: n_subtextures_y
+        type: u4
+        doc: Number of subtextures (Y)
+      - id: shader_type
+        type: u4
+        enum: spgd_data_shader_type
+        doc: Shader type
+      - id: box_size
+        type: u4
+        if: _parent.data_size > 40
+        doc: Box size
+      - id: particle_density
+        type: f4
+        if: _parent.data_size > 40
+        doc: Particle density
+
+  spgd_icon_field:
+    seq:
+      - id: texture_path
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Path to particle texture
