@@ -114,6 +114,24 @@ enums:
     0: rain
     1: snow_dust_fog
 
+  clfm_fnam_playable:
+    0: non_playable
+    1: playable
+
+  equp_data_enum:
+    0: false
+    1: true
+
+  gras_data_distance_application:
+    1: above_at_least
+    2: above_at_most
+    3: below_at_least
+    4: below_at_most
+    5: either_at_least
+    6: either_at_most
+    7: either_at_most_above
+    8: either_at_most_below
+
 ###############################################################################
 #                             TYPE DEFINITIONS                                #
 ###############################################################################
@@ -491,10 +509,17 @@ types:
             '"ASPC"': aspc_form
             '"LTEX"': ltex_form
             '"STAT"': stat_form
+            '"GRAS"': gras_form
             '"TREE"': tree_form
+            '"IDLM"': idlm_form
             '"CLMT"': clmt_form
             '"SPGD"': spgd_form
             '"RFCT"': rfct_form
+            '"SHOU"': shou_form
+            '"EQUP"': equp_form
+            '"OTFT"': otft_form
+            '"CLFM"': clfm_form
+            '"REVB"': revb_form
             _: unknown_form_data
         doc: Fields contained by form
 
@@ -3075,6 +3100,87 @@ types:
         doc: LOD model 4 (Low Detail)
 
 ###############################################################################
+#                               GRASS (GRAS) FORM                             #
+###############################################################################
+  gras_form:
+    seq:
+      - id: fields
+        type: gras_field
+        repeat: eos
+        doc: Fields contained by GRAS form
+
+  gras_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"OBND"': obnd_field
+            '"MODL"': modl_field
+            '"MODT"': modt_field(data_size)
+            '"DATA"': gras_data_field
+        doc: Fields contained by GRAS form
+
+  gras_data_field:
+    seq:
+      - id: density
+        type: u1
+        doc: Density
+      - id: min_slope
+        type: u1
+        doc: Min slope
+      - id: max_slope
+        type: u1
+        id: Max slope
+      - id: unused_1
+        type: u1
+        doc: Unused byte
+      - id: distance_from_water
+        type: u2
+        doc: Distance from water
+      - id: unused_2
+        type: u2
+        doc: Unused short
+      - id: distance_application
+        type: u4
+        enum: gras_data_distance_application
+        doc: How to apply distance from water
+      - id: position_range
+        type: f4
+        doc: Position range
+      - id: height_range
+        type: f4
+        doc: Height range
+      - id: color_range
+        type: f4
+        doc: Color range
+      - id: wave_period
+        type: f4
+        doc: Wave period
+      - id: flags
+        type: gras_data_flags
+
+  gras_data_flags:
+    seq:
+      - id: vertex_lighting
+        type: b1
+      - id: uniform_scaling
+        type: b1
+      - id: fit_to_slope
+        type: b1
+      - type: b29
+      
+
+###############################################################################
 #                                TREE (TREE) FORM                             #
 ###############################################################################
   tree_form:
@@ -3152,6 +3258,69 @@ types:
       - id: leaf_frequency
         type: f4
         doc: Leaf frequency
+
+###############################################################################
+#                             IDLE MARKER (IDLM) FORM                         #
+###############################################################################
+  idlm_form:
+    seq:
+      - id: fields
+        type: idlm_field
+        repeat: eos
+        doc: Fields contained by IDLM form
+
+  idlm_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"OBND"': obnd_field
+            '"IDLF"': idlm_idlf_field
+            '"IDLC"': idlm_idlc_field
+        doc: Fields contained by IDLM form
+
+  idlm_idlf_field:
+    seq:
+      - id: flags
+        type: idlf_idlm_flags
+        doc: Flags
+
+  idlm_idlf_flags:
+    seq:
+      - id: in_sequence
+        type: b1
+      - type: b1
+      - id: do_once
+        type: b1
+      - id: edited
+        type: b1
+        doc: Editing in CK sets this flag
+      - id: ignored_by_sandbox
+        type: b1
+      - type: b3
+
+  idlm_idlc_field:
+    seq:
+      - id: animation_count
+        type: u8
+        doc: Animation count
+      - id: idle_timer_setting
+        type: f4
+        doc: Idle timer setting
+      - id: idle_animation
+        type: u4
+        repeat: eos
+        doc: Idle animation (IDLE) FormID
 
 ###############################################################################
 #                               CLIMATE (CLMT) FORM                           #
@@ -3568,3 +3737,251 @@ types:
       - id: object
         type: u4
         doc: FormID belonging to form list
+
+###############################################################################
+#                                SHOUT (SHOU) FORM                            #
+###############################################################################
+  shou_form:
+    seq:
+      - id: fields
+        type: shou_field
+        repeat: eos
+        doc: Fields contained by SHOU form
+  
+  shou_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u4
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"FULL"': shou_full_field
+            '"MDOB"': shou_mdob_field
+            '"DESC"': shou_desc_field
+            '"SNAM"': shou_snam_field
+        doc: Fields contained by SHOU form
+
+  shou_full_field:
+    seq:
+      - id: full_name
+        type: lstring(_parent.data_size)
+        doc: In-game name
+  
+  shou_mdob_field:
+    seq:
+      - id: model
+        type: u4
+        doc: FormID of STAT model shown in inventory
+
+  shou_desc_field:
+    seq:
+      - id: description
+        type: lstring(_parent.data_size)
+        doc: Description (0 if none)
+
+  shou_snam_field:
+    seq:
+      - id: word_of_power
+        type: u4
+        doc: Associated WOOP FormID
+      - id: spell_effect
+        type: u4
+        doc: Associated SPEL FormID
+      - id: recovery_time
+        type: f4
+        doc: Shout recovery time
+
+###############################################################################
+#                             EQUIP SLOT (EQUP) FORM                          #
+###############################################################################
+  equp_form:
+    seq:
+      - id: fields
+        type: equp_field
+        repeat: eos
+        doc: Fields contained by EQUP form
+  
+  equp_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u4
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"PNAM"': equp_pnam_field
+        doc: Fields contained by EQUP form
+
+  equp_pnam_field:
+    seq:
+      - id: parent
+        type: u4
+        repeat: eos
+        doc: FormIDs of EQUP parents
+
+  equp_data_field:
+    seq:
+      - id: use_all_parents
+        type: u4
+        enum: equp_data_enum
+        doc: Use all parents in PNAM
+
+###############################################################################
+#                               OUTFIT (OTFT) FORM                            #
+###############################################################################
+  otft_form:
+    seq:
+      - id: fields
+        type: otft_field
+        repeat: eos
+        doc: Fields contained by OTFT form
+  
+  otft_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u4
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"INAM"': otft_inam_field
+        doc: Fields contained by OTFT form
+
+  otft_inam_field:
+    seq:
+      - id: inventory_form
+        type: u4
+        repeat: eos
+        doc: Form in inventory list (either ARMO or LVLI)
+
+###############################################################################
+#                                COLOR (CLFM) FORM                            #
+###############################################################################
+  clfm_form:
+    seq:
+      - id: fields
+        type: clfm_field
+        repeat: eos
+        doc: Fields contained by CLFM form
+  
+  clfm_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u4
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"FULL"': clfm_full_field
+            '"CNAM"': color
+            '"FNAM"': clfm_fnam_field
+        doc: Fields contained by CLFM form
+
+  clfm_full_field:
+    seq:
+      - id: full_name
+        type: lstring(_parent.data_size)
+        doc: Full name
+
+  clfm_fnam_field:
+    seq:
+      - id: playable
+        enum: clfm_fnam_playable
+        type: u4
+        doc: Playable enum
+
+###############################################################################
+#                               REVERB (REVB) FORM                            #
+###############################################################################
+  revb_form:
+    seq:
+      - id: fields
+        type: revb_field
+        repeat: eos
+        doc: Fields contained by REVB form
+  
+  revb_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u4
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"DATA"': revb_data_field
+        doc: Fields contained by REVB form
+
+  revb_data_field:
+    seq:
+      - id: decay_time
+        type: u2
+        doc: Decay time (ms)
+      - id: hf_reference
+        type: u2
+        doc: HF reference (Hz)
+      - id: room_filter
+        type: s1
+        doc: Room filter
+      - id: room_hf_filter
+        type: s1
+        doc: Room HF filter
+      - id: reflections
+        type: s1
+        doc: Reflections
+      - id: reverb_amp
+        type: s1
+        doc: Reverb amplitude
+      - id: decay_hf_ratio
+        type: u1
+        doc: Decay HF ratio (x100)
+      - id: scaled_reflect_delay
+        type: u1
+        doc: Scaled reflect delay (scaled by ~0.83)
+      - id: reverb_delay
+        type: u1
+        doc: Reverb delay (ms)
+      - id: diffusion_pct
+        type: u1
+        doc: Diffusion percentage
+      - id: density_pct
+        type: u1
+        doc: Density percentage
+      - id: unknown
+        type: u1
+        doc: Unknown integer (usually zero)

@@ -8,7 +8,7 @@ If you would like do help us read and write .esp/.esm files, join our [Discord](
 
 Progress
 --------
-**19** out of **118** <br />
+**25** out of **118** <br />
 If you're wondering how we're doing so far, our progress through potential records/forms is shown below:
 
 
@@ -45,7 +45,7 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] APPA</li></ul>   | Apparatus                                 |
 |  <ul><li>[x] STAT</li></ul>   | Static                                    |
 |  <ul><li>[ ] MSTT</li></ul>   | Movable Static                            |
-|  <ul><li>[ ] GRAS</li></ul>   | Grass                                     |
+|  <ul><li>[x] GRAS</li></ul>   | Grass                                     |
 |  <ul><li>[x] TREE</li></ul>   | Tree                                      |
 |  <ul><li>[ ] FLOR</li></ul>   | Flora                                     |
 |  <ul><li>[ ] FURN</li></ul>   | Furniture                                 |
@@ -55,7 +55,7 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] LVLN</li></ul>   | Levelled Actor                            |
 |  <ul><li>[ ] KEYM</li></ul>   | Key                                       |
 |  <ul><li>[ ] ALCH</li></ul>   | Potion                                    |
-|  <ul><li>[ ] IDLM</li></ul>   | Idle Marker                               |
+|  <ul><li>[x] IDLM</li></ul>   | Idle Marker                               |
 |  <ul><li>[ ] COBJ</li></ul>   | Constructible Object                      |
 |  <ul><li>[ ] PROJ</li></ul>   | Projectile                                |
 |  <ul><li>[ ] HAZD</li></ul>   | Hazard                                    |
@@ -110,12 +110,12 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] MUST</li></ul>   | Music Track                               |
 |  <ul><li>[ ] DLVW</li></ul>   | Dialog View                               |
 |  <ul><li>[ ] WOOP</li></ul>   | Word of Power                             |
-|  <ul><li>[ ] SHOU</li></ul>   | Shout                                     |
-|  <ul><li>[ ] EQUP</li></ul>   | Equip Slot                                |
+|  <ul><li>[x] SHOU</li></ul>   | Shout                                     |
+|  <ul><li>[x] EQUP</li></ul>   | Equip Slot                                |
 |  <ul><li>[ ] RELA</li></ul>   | Relationship                              |
 |  <ul><li>[ ] SCEN</li></ul>   | Scene                                     |
 |  <ul><li>[ ] ASTP</li></ul>   | Association Type                          |
-|  <ul><li>[ ] OTFT</li></ul>   | Outfit                                    |
+|  <ul><li>[x] OTFT</li></ul>   | Outfit                                    |
 |  <ul><li>[ ] ARTO</li></ul>   | Art Object                                |
 |  <ul><li>[ ] MATO</li></ul>   | Material Object                           |
 |  <ul><li>[ ] MOVT</li></ul>   | Movement Type                             |
@@ -124,8 +124,8 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] SNCT</li></ul>   | Sound Category                            |
 |  <ul><li>[ ] SOPM</li></ul>   | Sound Output Model                        |
 |  <ul><li>[ ] COLL</li></ul>   | Collision Layer                           |
-|  <ul><li>[ ] CLFM</li></ul>   | Color                                     |
-|  <ul><li>[ ] REVB</li></ul>   | Reverb                                    |
+|  <ul><li>[x] CLFM</li></ul>   | Color                                     |
+|  <ul><li>[x] REVB</li></ul>   | Reverb                                    |
 |  <ul><li>[ ] REFR</li></ul>   | Object Reference                          |
 |  <ul><li>[ ] ACHR</li></ul>   | Actor Reference                           |
 |  <ul><li>[ ] NAVM</li></ul>   | NavMesh                                   |
