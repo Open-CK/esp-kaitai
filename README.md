@@ -8,7 +8,7 @@ If you would like do help us read and write .esp/.esm files, join our [Discord](
 
 Progress
 --------
-**19** out of **118**
+**19** out of **118** <br />
 If you're wondering how we're doing so far, our progress through potential records/forms is shown below:
 
 
@@ -133,5 +133,3 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] PHZD</li></ul>   | Placed Hazard                             |
 |  <ul><li>[ ] LAND</li></ul>   | Landscape                                 |
 |  <ul><li>[ ] INFO</li></ul>   | Dialog Topic Info                         |
-
-(Note: this table is not complete yet)
