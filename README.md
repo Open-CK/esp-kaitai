@@ -61,7 +61,7 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] SLGM</li></ul>   | Soul Gem                                  |
 |  <ul><li>[ ] LVLI</li></ul>   | Leveled Item                              |
 |  <ul><li>[ ] WTHR</li></ul>   | Weather                                   |
-|  <ul><li>[ ] CLMT</li></ul>   | Climate *(in progress)*                   |
+|  <ul><li>[x] CLMT</li></ul>   | Climate                                   |
 |  <ul><li>[x] SPGD</li></ul>   | Shader Particle Geometry                  |
 |  <ul><li>[x] RFCT</li></ul>   | Visual Effect                             |
 |  <ul><li>[ ] REGN</li></ul>   | Region                                    |
