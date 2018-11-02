@@ -42,7 +42,7 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] LIGH</li></ul>   | Light                                     |
 |  <ul><li>[ ] MISC</li></ul>   | Miscellaneous Object *(in progress)*      |
 |  <ul><li>[ ] APPA</li></ul>   | Apparatus                                 |
-|  <ul><li>[ ] STAT</li></ul>   | Static                                    |
+|  <ul><li>[x] STAT</li></ul>   | Static                                    |
 |  <ul><li>[ ] MSTT</li></ul>   | Movable Static                            |
 |  <ul><li>[ ] GRAS</li></ul>   | Grass                                     |
 |  <ul><li>[ ] TREE</li></ul>   | Tree                                      |

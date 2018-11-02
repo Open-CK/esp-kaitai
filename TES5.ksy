@@ -3008,6 +3008,71 @@ types:
         doc: Form ID of associated GRAS form
 
 ###############################################################################
+#                               STATIC (STAT) FORM                            #
+###############################################################################
+  stat_form:
+    seq:
+      - id: fields
+        type: stat_field
+        repeat: eos
+        doc: Fields contained by STAT form
+
+  stat_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"OBND"': obnd_field
+            '"MODL"': modl_field
+            '"MODT"': modt_field(data_size)
+            '"MODS"': mods_field
+            '"DNAM"': stat_dnam_field
+            '"MNAM"': stat_mnam_field
+        doc: Fields contained by STAT form
+
+  stat_dnam_field:
+    seq:
+      - id: max_angle
+        type: f4
+        doc: Max angle (30-120 degrees)
+      - id: directional_material
+        type: u4
+        doc: FormID of directional material MATO form
+
+  stat_mnam_field:
+    seq:
+      - id: lod_model_1
+        type: str
+        encoding: UTF-8
+        size: 260
+        doc: LOD model 1 (High Detail)
+      - id: load_model_2
+        type: str
+        encoding: UTF-8
+        size: 260
+        doc: LOD model 2
+      - id: lod_model_3
+        type: str
+        encoding: UTF-8
+        size: 260
+        doc: LOD model 3
+      - id: load_model_4
+        type: str
+        encoding: UTF-8
+        size: 260
+        doc: LOD model 4 (Low Detail)
+
+###############################################################################
 #                               CLIMATE (CLMT) FORM                           #
 ###############################################################################
   clmt_form:
