@@ -8,6 +8,7 @@ If you would like do help us read and write .esp/.esm files, join our [Discord](
 
 Progress
 --------
+**19** out of **118**
 If you're wondering how we're doing so far, our progress through potential records/forms is shown below:
 
 
@@ -49,7 +50,7 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] FLOR</li></ul>   | Flora                                     |
 |  <ul><li>[ ] FURN</li></ul>   | Furniture                                 |
 |  <ul><li>[ ] WEAP</li></ul>   | Weapon                                    |
-|  <ul><li>[ ] ARMMO</li></ul>  | Ammunition                                |
+|  <ul><li>[ ] AMMO</li></ul>   | Ammunition                                |
 |  <ul><li>[ ] NPC_</li></ul>   | NPC                                       |
 |  <ul><li>[ ] LVLN</li></ul>   | Levelled Actor                            |
 |  <ul><li>[ ] KEYM</li></ul>   | Key                                       |
@@ -65,7 +66,7 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[x] SPGD</li></ul>   | Shader Particle Geometry                  |
 |  <ul><li>[x] RFCT</li></ul>   | Visual Effect                             |
 |  <ul><li>[ ] REGN</li></ul>   | Region                                    |
-|  <ul><li>[ ] NAVI</li></ul>   | NavMesh                                   |
+|  <ul><li>[ ] NAVI</li></ul>   | Navigation (Master Data)                  |
 |  <ul><li>[ ] CELL</li></ul>   | Cell                                      |
 |  <ul><li>[ ] WRLD</li></ul>   | Worldspace                                |
 |  <ul><li>[ ] DIAL</li></ul>   | Dialog Topic                              |
@@ -89,5 +90,48 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] AVIF</li></ul>   | Actor Values/Perk Tree Graphics           |
 |  <ul><li>[ ] CAMS</li></ul>   | Camera Shot                               |
 |  <ul><li>[ ] CPTH</li></ul>   | Camera Path                               |
+|  <ul><li>[ ] VTYP</li></ul>   | Voice Type                                |
+|  <ul><li>[ ] MATT</li></ul>   | Material Type                             |
+|  <ul><li>[ ] IPCT</li></ul>   | Impact Data                               |
+|  <ul><li>[ ] IPDS</li></ul>   | Impact Data Set                           |
+|  <ul><li>[ ] ARMA</li></ul>   | Armature                                  |
+|  <ul><li>[ ] ECZN</li></ul>   | Encounter Zone                            |
+|  <ul><li>[ ] LCTN</li></ul>   | Location                                  |
+|  <ul><li>[ ] MESG</li></ul>   | Message                                   |
+|  <ul><li>[ ] DOBJ</li></ul>   | Default Object Manager                    |
+|  <ul><li>[ ] LGTM</li></ul>   | Lighting Template                         |
+|  <ul><li>[ ] MUSC</li></ul>   | Music Type                                |
+|  <ul><li>[ ] FSTP</li></ul>   | Footstep                                  |
+|  <ul><li>[ ] FSTS</li></ul>   | Footstep List                             |
+|  <ul><li>[ ] SMBN</li></ul>   | Story Manager Branch Node                 |
+|  <ul><li>[ ] SMQN</li></ul>   | Story Manager Quest Node                  |
+|  <ul><li>[ ] SMEN</li></ul>   | Story Manager Event Node                  |
+|  <ul><li>[ ] DLBR</li></ul>   | Dialog Branch                             |
+|  <ul><li>[ ] MUST</li></ul>   | Music Track                               |
+|  <ul><li>[ ] DLVW</li></ul>   | Dialog View                               |
+|  <ul><li>[ ] WOOP</li></ul>   | Word of Power                             |
+|  <ul><li>[ ] SHOU</li></ul>   | Shout                                     |
+|  <ul><li>[ ] EQUP</li></ul>   | Equip Slot                                |
+|  <ul><li>[ ] RELA</li></ul>   | Relationship                              |
+|  <ul><li>[ ] SCEN</li></ul>   | Scene                                     |
+|  <ul><li>[ ] ASTP</li></ul>   | Association Type                          |
+|  <ul><li>[ ] OTFT</li></ul>   | Outfit                                    |
+|  <ul><li>[ ] ARTO</li></ul>   | Art Object                                |
+|  <ul><li>[ ] MATO</li></ul>   | Material Object                           |
+|  <ul><li>[ ] MOVT</li></ul>   | Movement Type                             |
+|  <ul><li>[ ] SNDR</li></ul>   | Sound Reference                           |
+|  <ul><li>[ ] DUAL</li></ul>   | Dual Cast Data                            |
+|  <ul><li>[ ] SNCT</li></ul>   | Sound Category                            |
+|  <ul><li>[ ] SOPM</li></ul>   | Sound Output Model                        |
+|  <ul><li>[ ] COLL</li></ul>   | Collision Layer                           |
+|  <ul><li>[ ] CLFM</li></ul>   | Color                                     |
+|  <ul><li>[ ] REVB</li></ul>   | Reverb                                    |
+|  <ul><li>[ ] REFR</li></ul>   | Object Reference                          |
+|  <ul><li>[ ] ACHR</li></ul>   | Actor Reference                           |
+|  <ul><li>[ ] NAVM</li></ul>   | NavMesh                                   |
+|  <ul><li>[ ] PGRE</li></ul>   | Placed Grenade                            |
+|  <ul><li>[ ] PHZD</li></ul>   | Placed Hazard                             |
+|  <ul><li>[ ] LAND</li></ul>   | Landscape                                 |
+|  <ul><li>[ ] INFO</li></ul>   | Dialog Topic Info                         |
 
 (Note: this table is not complete yet)
