@@ -490,6 +490,8 @@ types:
             '"SOUN"': soun_form
             '"ASPC"': aspc_form
             '"LTEX"': ltex_form
+            '"STAT"': stat_form
+            '"TREE"': tree_form
             '"CLMT"': clmt_form
             '"SPGD"': spgd_form
             '"RFCT"': rfct_form
@@ -3071,6 +3073,85 @@ types:
         encoding: UTF-8
         size: 260
         doc: LOD model 4 (Low Detail)
+
+###############################################################################
+#                                TREE (TREE) FORM                             #
+###############################################################################
+  tree_form:
+    seq:
+      - id: fields
+        type: tree_field
+        repeat: eos
+        doc: Fields contained by TREE form
+
+  tree_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"OBND"': obnd_field
+            '"MODL"': modl_field
+            '"MODT"': modt_field(data_size)
+            '"PFIG"': tree_pfig_field
+            '"SNAM"': tree_snam_field
+            '"PFPC"': tree_pfpc_field
+            '"FULL"': tree_full_field
+            '"CNAM"': tree_cnam_field
+        doc: Fields contained by TREE form
+
+  tree_pfig_field:
+    seq:
+      - id: result_item
+        type: u4
+        doc: FormID of resultant INGR/ALCH object
+
+  tree_snam_field:
+    seq:
+      - id: activation_sound
+        type: u4
+        doc: FormID of activation SNDR
+
+  tree_pfpc_field:
+    seq:
+      - id: percent_chance
+        size: 4
+        doc: Always 100 with PFIG or 0 without
+
+  tree_full_field:
+    seq:
+      - id: in_game_name
+        type: lstring(_parent.data_size)
+        doc: Full in-game name
+
+  tree_cnam_field:
+    seq:
+      - id: trunk_flex
+        type: f4
+        doc: Trunk flexibility
+      - id: branch_flex
+        type: f4
+        doc: Branch flexibility
+      - id: unknown_float
+        type: f4
+        repeat: expr
+        repeat-expr: 8
+        doc: Unknown floats
+      - id: leaf_amplitude
+        type: f4
+        doc: Leaf amplitude
+      - id: leaf_frequency
+        type: f4
+        doc: Leaf frequency
 
 ###############################################################################
 #                               CLIMATE (CLMT) FORM                           #

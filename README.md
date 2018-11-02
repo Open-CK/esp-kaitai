@@ -45,7 +45,7 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[x] STAT</li></ul>   | Static                                    |
 |  <ul><li>[ ] MSTT</li></ul>   | Movable Static                            |
 |  <ul><li>[ ] GRAS</li></ul>   | Grass                                     |
-|  <ul><li>[ ] TREE</li></ul>   | Tree                                      |
+|  <ul><li>[x] TREE</li></ul>   | Tree                                      |
 |  <ul><li>[ ] FLOR</li></ul>   | Flora                                     |
 |  <ul><li>[ ] FURN</li></ul>   | Furniture                                 |
 |  <ul><li>[ ] WEAP</li></ul>   | Weapon                                    |
