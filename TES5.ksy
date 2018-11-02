@@ -851,7 +851,40 @@ types:
         type: b1
       - type: b27
 
+  modl_field:
+    seq:
+      - id: model_path
+        type: strz
+        encoding: UTF-8
+        size: _parent.data_size
+        doc: Model path
+
+  mods_field:
+    seq:
+      - id: alternate_texture
+        type: mods_alternate_texture
+        repeat: eos
+        doc: Alternate textures
   
+  mods_alternate_texture:
+    seq:
+      - id: remaining_textures
+        type: u4
+        doc: Count of remaining textures/MODS fields
+      - id: string_length
+        type: u4
+        doc: Length of 3D name string
+      - id: 3d_name
+        type: str
+        encoding: UTF-8
+        size: string_length
+        doc: 3D name
+      - id: texture_id
+        type: u4
+        doc: Texture set (TXST) FormID
+      - id: 3d_index
+        type: u4
+        doc: 3D index
 
 ###############################################################################
 #                           GMST (GAME SETTING) FORM                          #
@@ -3003,7 +3036,8 @@ types:
             '"FNAM"': clmt_fnam_field
             '"GNAM"': clmt_gnam_field
             '"TNAM"': clmt_tnam_field
-            '"MODL"': unknown_field_data        #TODO: MODL field
+            '"MODL"': modl_field
+            '"MODT"': modt_field(data_size)
         doc: Fields contained by CLMT form
 
   clmt_wlst_field:
