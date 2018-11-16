@@ -515,6 +515,9 @@ types:
             '"CLMT"': clmt_form
             '"SPGD"': spgd_form
             '"RFCT"': rfct_form
+            '"LSCR"': lscr_form
+            '"EFSH"': efsh_form
+            '"FLST"': flst_form
             '"SHOU"': shou_form
             '"EQUP"': equp_form
             '"OTFT"': otft_form
@@ -879,29 +882,31 @@ types:
       - type: b27
 
   modl_field:
+    params:
+      - id: data_size
+        type: u2
     seq:
       - id: model_path
         type: strz
         encoding: UTF-8
-        size: _parent.data_size
+        size: data_size
         doc: Model path
 
   mods_field:
     seq:
-      - id: alternate_texture
+      - id: remaining_textures
+        type: u4
+      - id: alternate_textures
         type: mods_alternate_texture
-        repeat: eos
-        doc: Alternate textures
+        repeat: expr
+        repeat-expr: remaining_textures
   
   mods_alternate_texture:
     seq:
-      - id: remaining_textures
-        type: u4
-        doc: Count of remaining textures/MODS fields
       - id: string_length
         type: u4
         doc: Length of 3D name string
-      - id: 3d_name
+      - id: three_d_name
         type: str
         encoding: UTF-8
         size: string_length
@@ -909,7 +914,7 @@ types:
       - id: texture_id
         type: u4
         doc: Texture set (TXST) FormID
-      - id: 3d_index
+      - id: three_d_index
         type: u4
         doc: 3D index
 
@@ -3060,7 +3065,7 @@ types:
           cases:
             '"EDID"': edid_field(data_size)
             '"OBND"': obnd_field
-            '"MODL"': modl_field
+            '"MODL"': modl_field(data_size)
             '"MODT"': modt_field(data_size)
             '"MODS"': mods_field
             '"DNAM"': stat_dnam_field
@@ -3125,7 +3130,7 @@ types:
           cases:
             '"EDID"': edid_field(data_size)
             '"OBND"': obnd_field
-            '"MODL"': modl_field
+            '"MODL"': modl_field(data_size)
             '"MODT"': modt_field(data_size)
             '"DATA"': gras_data_field
         doc: Fields contained by GRAS form
@@ -3206,7 +3211,7 @@ types:
           cases:
             '"EDID"': edid_field(data_size)
             '"OBND"': obnd_field
-            '"MODL"': modl_field
+            '"MODL"': modl_field(data_size)
             '"MODT"': modt_field(data_size)
             '"PFIG"': tree_pfig_field
             '"SNAM"': tree_snam_field
@@ -3292,7 +3297,7 @@ types:
   idlm_idlf_field:
     seq:
       - id: flags
-        type: idlf_idlm_flags
+        type: idlm_idlf_flags
         doc: Flags
 
   idlm_idlf_flags:
@@ -3351,7 +3356,7 @@ types:
             '"FNAM"': clmt_fnam_field
             '"GNAM"': clmt_gnam_field
             '"TNAM"': clmt_tnam_field
-            '"MODL"': modl_field
+            '"MODL"': modl_field(data_size)
             '"MODT"': modt_field(data_size)
         doc: Fields contained by CLMT form
 
@@ -3428,7 +3433,7 @@ types:
         size: 4
         doc: Unique type code
       - id: data_size
-        type: u4
+        type: u2
         doc: Size, in bytes, of field (minus header)
       - id: data
         type:
@@ -3507,7 +3512,7 @@ types:
         size: 4
         doc: Unique type code
       - id: data_size
-        type: u4
+        type: u2
         doc: Size, in bytes, of field (minus header)
       - id: data
         type:
@@ -3556,7 +3561,7 @@ types:
         size: 4
         doc: Unique type code
       - id: data_size
-        type: u4
+        type: u2
         doc: Size, in bytes, of field (minus header)
       - id: data
         type:
@@ -3568,7 +3573,7 @@ types:
             '"NAM7"': efsh_nam7_field
             '"NAM8"': efsh_nam8_field
             '"NAM9"': efsh_nam9_field
-            '"DATA"': unknown_field_data        #TODO (look at TES5Edit for this one)
+            '"DATA"': unknown_field_data(data_size)        #TODO (look at TES5Edit for this one)
 
   efsh_icon_field:
     seq:
@@ -3628,7 +3633,7 @@ types:
         size: 4
         doc: Unique type code
       - id: data_size
-        type: u4
+        type: u2
         doc: Size, in bytes, of field (minus header)
       - id: data
         type:
@@ -3722,7 +3727,7 @@ types:
         size: 4
         doc: Unique type code
       - id: data_size
-        type: u4
+        type: u2
         doc: Size, in bytes, of field (minus header)
       - id: data
         type:
@@ -3756,7 +3761,7 @@ types:
         size: 4
         doc: Unique type code
       - id: data_size
-        type: u4
+        type: u2
         doc: Size, in bytes, of field (minus header)
       - id: data
         type:
@@ -3817,7 +3822,7 @@ types:
         size: 4
         doc: Unique type code
       - id: data_size
-        type: u4
+        type: u2
         doc: Size, in bytes, of field (minus header)
       - id: data
         type:
@@ -3859,7 +3864,7 @@ types:
         size: 4
         doc: Unique type code
       - id: data_size
-        type: u4
+        type: u2
         doc: Size, in bytes, of field (minus header)
       - id: data
         type:
@@ -3894,7 +3899,7 @@ types:
         size: 4
         doc: Unique type code
       - id: data_size
-        type: u4
+        type: u2
         doc: Size, in bytes, of field (minus header)
       - id: data
         type:
@@ -3937,7 +3942,7 @@ types:
         size: 4
         doc: Unique type code
       - id: data_size
-        type: u4
+        type: u2
         doc: Size, in bytes, of field (minus header)
       - id: data
         type:
