@@ -8,7 +8,7 @@ If you would like do help us read and write .esp/.esm files, join our [Discord](
 
 Progress
 --------
-**30** out of **118** <br />
+**31** out of **118** <br />
 If you're wondering how we're doing so far, our progress through potential records/forms is shown below:
 
 
@@ -52,7 +52,7 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] WEAP</li></ul>   | Weapon                                    |
 |  <ul><li>[ ] AMMO</li></ul>   | Ammunition                                |
 |  <ul><li>[ ] NPC_</li></ul>   | NPC                                       |
-|  <ul><li>[ ] LVLN</li></ul>   | Levelled Actor                            |
+|  <ul><li>[x] LVLN</li></ul>   | Levelled Actor                            |
 |  <ul><li>[ ] KEYM</li></ul>   | Key                                       |
 |  <ul><li>[ ] ALCH</li></ul>   | Potion                                    |
 |  <ul><li>[x] IDLM</li></ul>   | Idle Marker                               |

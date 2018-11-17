@@ -539,6 +539,7 @@ types:
             '"STAT"': stat_form
             '"GRAS"': gras_form
             '"TREE"': tree_form
+            '"LVLN"': lvln_form
             '"IDLM"': idlm_form
             '"CLMT"': clmt_form
             '"SPGD"': spgd_form
@@ -973,6 +974,18 @@ types:
       - id: duration
         type: u4
         doc: Duration (0 = instant)
+
+  coed_field:
+    seq:
+      - id: owner
+        type: u4
+        doc: Owner FACT or NPC_ FormID
+      - id: value
+        type: u4
+        doc: NPC_ form, GLOB - FACT form, int32 value
+      - id: item_condition
+        type: f4
+        doc: Item condition
 
 ###############################################################################
 #                           GMST (GAME SETTING) FORM                          #
@@ -3473,6 +3486,78 @@ types:
       - id: leaf_frequency
         type: f4
         doc: Leaf frequency
+
+###############################################################################
+#                            LEVELED ACTOR (LVLN) FORM                        #
+###############################################################################
+  lvln_form:
+    seq:
+      - id: fields
+        type: lvln_field
+        repeat: eos
+        doc: Fields contained by LVLN form
+
+  lvln_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"OBND"': obnd_field
+            '"LVLD"': lvln_lvld_field
+            '"LVLF"': lvln_lvlf_field
+            '"LLCT"': lvln_llct_field
+            '"LVLO"': lvln_lvlo_field
+            '"COED"': coed_field
+            '"MODL"': modl_field(data_size)
+        doc: Fields contained by LVLN field
+
+  lvln_lvld_field:
+    seq:
+      - id: chance_none
+        type: u1
+        doc: Chance for item not to spawn (not in CK, always 0)
+  
+  lvln_lvlf_field:
+    seq:
+      - id: flags
+        type: lvln_lvlf_flags
+        doc: Leveled actor flags
+
+  lvln_lvlf_flags:
+    seq:
+      - id: all_levels
+        type: b1
+      - id: each
+        type: b1
+      - type: b6
+  
+  lvln_llct_field:
+    seq:
+      - id: list_count
+        type: u1
+        doc: Number of LVLO entries
+
+  lvln_lvlo_field:
+    seq:
+      - id: level
+        type: u4
+        doc: Entry level set
+      - id: entry
+        type: u4
+        doc: NPC_ or LVLN FormID
+      - id: enemy_spawn_count
+        type: u4
+        doc: Number of enemies to spawn (always 1, not editable in CK)
 
 ###############################################################################
 #                             IDLE MARKER (IDLM) FORM                         #
