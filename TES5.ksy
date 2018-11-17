@@ -132,12 +132,12 @@ enums:
     7: either_at_most_above
     8: either_at_most_below
 
-  ench_enit_cast_type:
+  effect_cast_type:
     0: constant_effect
     1: fire_and_forget
     2: concentration
 
-  ench_enit_delivery:
+  effect_delivery:
     0: self
     1: touch
     2: aimed
@@ -525,6 +525,7 @@ types:
             '"ASPC"': aspc_form
             '"LTEX"': ltex_form
             '"ENCH"': ench_form
+            '"SPEL"': spel_form
             '"STAT"': stat_form
             '"GRAS"': gras_form
             '"TREE"': tree_form
@@ -934,6 +935,24 @@ types:
       - id: three_d_index
         type: u4
         doc: 3D index
+
+  efid_field:
+    seq:
+      - id: effect_id
+        type: u4
+        doc: Magic effect MGEF FormID
+
+  efit_field:
+    seq:
+      - id: magnitude
+        type: f4
+        doc: Magnitude
+      - id: area_of_effect
+        type: u4
+        doc: Area of Effect
+      - id: duration
+        type: u4
+        doc: Duration (0 = instant)
 
 ###############################################################################
 #                           GMST (GAME SETTING) FORM                          #
@@ -3057,7 +3076,7 @@ types:
         doc: Form ID of associated GRAS form
 
 ###############################################################################
-#                               STATIC (STAT) FORM                            #
+#                            ENCHANTMENT (ENCH) FORM                          #
 ###############################################################################
   ench_form:
     seq:
@@ -3084,8 +3103,8 @@ types:
             '"OBND"': obnd_field
             '"FULL"': ench_full_field
             '"ENIT"': ench_enit_field
-            '"EFID"': ench_efid_field
-            '"EFIT"': ench_efit_field
+            '"EFID"': efid_field
+            '"EFIT"': efit_field
             '"CIS2"': cis2_field(data_size)
             '"CTDA"': ctda_field
         doc: Fields contained by ENCH form
@@ -3106,14 +3125,14 @@ types:
         doc: Enchantment flags
       - id: cast_type
         type: u4
-        enum: ench_enit_cast_type
+        enum: effect_cast_type
         doc: Cast type enumeration
       - id: enchantment_amount
         type: u4
         doc: Fully charged value
       - id: delivery
         type: u4
-        enum: ench_enit_delivery
+        enum: effect_delivery
         doc: Effect delivery method
       - id: enchant_type
         type: u4
@@ -3139,23 +3158,99 @@ types:
         type: b1
       - type: b29
 
-  ench_efid_field:
+###############################################################################
+#                               SPELL (SPEL) FORM                             #
+###############################################################################
+  spel_form:
     seq:
-      - id: effect_id
-        type: u4
-        doc: Magic effect MGEF FormID
+      - id: fields
+        type: spel_field
+        repeat: eos
+        doc: Fields contained by SPEL form
+    
+  spel_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"OBND"': obnd_field
+            '"FULL"': spel_full_field
+            '"MDOB"': spel_mdob_field
+            '"ETYP"': spel_etyp_field
+            '"DESC"': spel_desc_field
+            '"SPIT"': spel_spit_field
+            '"EFID"': efid_field
+            '"EFIT"': efit_field
+            '"CIS2"': cis2_field(data_size)
+            '"CTDA"': ctda_field
+        doc: Fields contained by SPEL form
 
-  ench_efit_field:
+  spel_full_field:
     seq:
-      - id: magnitude
+      - id: full_name
+        type: lstring(_parent.data_size)
+        doc: Full (in-game) name
+  
+  spel_mdob_field:
+    seq:
+      - id: menu_icon
+        type: u4
+        doc: Menu display object STAT FormID
+
+  spel_etyp_field:
+    seq:
+      - id: equip_type
+        type: u4
+        doc: Equip slot EQUP FormID
+  
+  spel_desc_field:
+    seq:
+      - id: description
+        type: lstring(_parent.data_size)
+        doc: In-game description
+
+  spel_spit_field:
+    seq:
+      - id: spell_cost
+        type: u4
+        doc: Spell cost
+      - id: flags
+        type: spel_spit_flags
+        doc: Spell item flags
+      - id: spell_type
+        type: u4
+        enum: spel_spit_spell_type
+        doc: Spell type
+      - id: charge_time
         type: f4
-        doc: Magnitude
-      - id: area_of_effect
+        doc: Charge time
+      - id: cast_type
         type: u4
-        doc: Area of Effect
-      - id: duration
+        enum: effect_cast_type
+        doc: Cast type enumeration
+      - id: delivery
         type: u4
-        doc: Duration (0 = instant)
+        enum: effect_delivery
+        doc: Spell delivery method
+      - id: cast_duration
+        type: f4
+        doc: Minimum duration of a concentrated spell
+      - id: range
+        type: f4
+        doc: Range
+      - id: perk
+        type: u4
+        doc: PERK FormID
 
 ###############################################################################
 #                               STATIC (STAT) FORM                            #
