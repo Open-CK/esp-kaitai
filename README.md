@@ -8,7 +8,7 @@ If you would like do help us read and write .esp/.esm files, join our [Discord](
 
 Progress
 --------
-**25** out of **118** <br />
+**30** out of **118** <br />
 If you're wondering how we're doing so far, our progress through potential records/forms is shown below:
 
 
@@ -31,7 +31,7 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] SCPT</li></ul>   | Script                                    |
 |  <ul><li>[x] LTEX</li></ul>   | Land Texture                              |
 |  <ul><li>[x] ENCH</li></ul>   | Enchantment                               |
-|  <ul><li>[ ] SPEL</li></ul>   | Spell                                     |
+|  <ul><li>[x] SPEL</li></ul>   | Spell                                     |
 |  <ul><li>[ ] SCRL</li></ul>   | Scroll                                    |
 |  <ul><li>[ ] ACTI</li></ul>   | Activator                                 |
 |  <ul><li>[ ] TACT</li></ul>   | Talking Activator                         |

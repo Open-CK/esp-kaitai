@@ -148,6 +148,16 @@ enums:
     0x06: enchantment
     0x0C: staff_enchantment
 
+  spel_spit_spell_type:
+    0x00: spell
+    0x01: disease
+    0x02: power
+    0x03: lesser_power
+    0x04: ability
+    0x05: poison
+    0x0A: addiction
+    0x0B: voice
+
 ###############################################################################
 #                             TYPE DEFINITIONS                                #
 ###############################################################################
@@ -575,6 +585,16 @@ types:
         encoding: UTF-8
         size: data_size
         doc: Form name displayed in CK
+
+  full_field:
+    params:
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+    seq:
+      - id: full
+        type: lstring(data_size)
+        doc: Full in-game text
         
   color:
     seq:
@@ -1267,17 +1287,11 @@ types:
           switch-on: type
           cases:
             '"EDID"': edid_field(data_size)
-            '"FULL"': clas_full_field
+            '"FULL"': full_field(data_size)
             '"DESC"': clas_desc_field
             '"ICON"': clas_icon_field
             '"DATA"': clas_data_field
         doc: Fields contained by CLAS form
-  
-  clas_full_field:
-    seq:
-      - id: name
-        type: lstring(_parent.data_size)
-        doc: Class name
         
   clas_desc_field:
     seq:
@@ -1359,7 +1373,7 @@ types:
           switch-on: type
           cases:
             '"EDID"': edid_field(data_size)
-            '"FULL"': fact_full_field
+            '"FULL"': full_field(data_size)
             '"XNAM"': fact_xnam_field
             '"DATA"': fact_data_field
             '"JAIL"': fact_jail_field
@@ -1381,12 +1395,6 @@ types:
             '"CIS2"': cis2_field(data_size)
             '"CTDA"': ctda_field
         doc: Fields contained by FACT form
-
-  fact_full_field:
-    seq:
-      - id: full_name
-        type: lstring(_parent.data_size)
-        doc: Faction full name
 
   fact_xnam_field:
     seq:
@@ -1589,7 +1597,7 @@ types:
           switch-on: type
           cases:
             '"EDID"': edid_field(data_size)
-            '"FULL"': hdpt_full_field
+            '"FULL"': full_field(data_size)
             '"MODL"': hdpt_modl_field
             '"MODT"': generic_modt(data_size, _parent._parent.header.version)
             '"DATA"': hdpt_data_field
@@ -1600,12 +1608,7 @@ types:
             '"TNAM"': hdpt_tnam_field
             '"RNAM"': hdpt_rnam_field
             '"CNAM"': color
-
-  hdpt_full_field:
-    seq:
-      - id: name
-        type: lstring(_parent.data_size)
-        doc: Head part name (almost always the same as EDID)
+        doc: Fields contained by HDPT form
 
   hdpt_modl_field:
     seq:
@@ -1689,16 +1692,10 @@ types:
           switch-on: type
           cases:
             '"EDID"': edid_field(data_size)
-            '"FULL"': eyes_full_field
+            '"FULL"': full_field(data_size)
             '"ICON"': eyes_icon_field
             '"DATA"': eyes_data_field
         doc: Fields contained by EYES form
-
-  eyes_full_field:
-    seq:
-      - id: description
-        type: lstring(_parent.data_size)
-        doc: Item description
 
   eyes_icon_field:
     seq:
@@ -1749,7 +1746,7 @@ types:
           switch-on: type
           cases:
             '"EDID"': edid_field(data_size)
-            '"FULL"': race_full_field
+            '"FULL"': full_field(data_size)
             '"DESC"': race_desc_field
             '"SPCT"': race_spct_field
             '"SPLO"': race_splo_field
@@ -1813,12 +1810,7 @@ types:
             '"NAM8"': race_nam8_field
             '"RNAM"': race_rnam_field
             _: unknown_field_data(data_size)
-
-  race_full_field:
-    seq:
-      - id: full_name
-        type: lstring(_parent.data_size)
-        doc: Full race name (as it appears in-game)
+        doc: Fields contained by RACE form
 
   race_desc_field:
     seq:
@@ -3101,19 +3093,13 @@ types:
           cases:
             '"EDID"': edid_field(data_size)
             '"OBND"': obnd_field
-            '"FULL"': ench_full_field
+            '"FULL"': full_field(data_size)
             '"ENIT"': ench_enit_field
             '"EFID"': efid_field
             '"EFIT"': efit_field
             '"CIS2"': cis2_field(data_size)
             '"CTDA"': ctda_field
         doc: Fields contained by ENCH form
-  
-  ench_full_field:
-    seq:
-      - id: full_name
-        type: lstring(_parent.data_size)
-        doc: Full (in-game) name
 
   ench_enit_field:
     seq:
@@ -3184,7 +3170,7 @@ types:
           cases:
             '"EDID"': edid_field(data_size)
             '"OBND"': obnd_field
-            '"FULL"': spel_full_field
+            '"FULL"': full_field(data_size)
             '"MDOB"': spel_mdob_field
             '"ETYP"': spel_etyp_field
             '"DESC"': spel_desc_field
@@ -3194,12 +3180,6 @@ types:
             '"CIS2"': cis2_field(data_size)
             '"CTDA"': ctda_field
         doc: Fields contained by SPEL form
-
-  spel_full_field:
-    seq:
-      - id: full_name
-        type: lstring(_parent.data_size)
-        doc: Full (in-game) name
   
   spel_mdob_field:
     seq:
@@ -3251,6 +3231,29 @@ types:
       - id: perk
         type: u4
         doc: PERK FormID
+
+  spel_spit_flags:
+    seq:
+      - id: not_auto_calibrate
+        type: b1
+      - type: b15
+      - id: unknown_1
+        type: b1
+      - id: pc_start_spell
+        type: b1
+      - id: unknown_2
+        type: b1
+      - id: area_effect_ignores_los
+        type: b1
+      - id: ignore_resistance
+        type: b1
+      - id: disallow_spell_absorb_reflect
+        type: b1
+      - id: unknown_3
+        type: b1
+      - id: no_dual_cast_modifications
+        type: b1
+      - type: b8
 
 ###############################################################################
 #                               STATIC (STAT) FORM                            #
@@ -3429,7 +3432,7 @@ types:
             '"PFIG"': tree_pfig_field
             '"SNAM"': tree_snam_field
             '"PFPC"': tree_pfpc_field
-            '"FULL"': tree_full_field
+            '"FULL"': full_field(data_size)
             '"CNAM"': tree_cnam_field
         doc: Fields contained by TREE form
 
@@ -3450,12 +3453,6 @@ types:
       - id: percent_chance
         size: 4
         doc: Always 100 with PFIG or 0 without
-
-  tree_full_field:
-    seq:
-      - id: in_game_name
-        type: lstring(_parent.data_size)
-        doc: Full in-game name
 
   tree_cnam_field:
     seq:
@@ -3981,17 +3978,11 @@ types:
           switch-on: type
           cases:
             '"EDID"': edid_field(data_size)
-            '"FULL"': shou_full_field
+            '"FULL"': full_field(data_size)
             '"MDOB"': shou_mdob_field
             '"DESC"': shou_desc_field
             '"SNAM"': shou_snam_field
         doc: Fields contained by SHOU form
-
-  shou_full_field:
-    seq:
-      - id: full_name
-        type: lstring(_parent.data_size)
-        doc: In-game name
   
   shou_mdob_field:
     seq:
@@ -4119,16 +4110,10 @@ types:
           switch-on: type
           cases:
             '"EDID"': edid_field(data_size)
-            '"FULL"': clfm_full_field
+            '"FULL"': full_field(data_size)
             '"CNAM"': color
             '"FNAM"': clfm_fnam_field
         doc: Fields contained by CLFM form
-
-  clfm_full_field:
-    seq:
-      - id: full_name
-        type: lstring(_parent.data_size)
-        doc: Full name
 
   clfm_fnam_field:
     seq:
