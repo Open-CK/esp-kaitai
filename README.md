@@ -30,7 +30,7 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[ ] MGEF</li></ul>   | Magic Effect                              |
 |  <ul><li>[ ] SCPT</li></ul>   | Script                                    |
 |  <ul><li>[x] LTEX</li></ul>   | Land Texture                              |
-|  <ul><li>[ ] ENCH</li></ul>   | Enchantment                               |
+|  <ul><li>[x] ENCH</li></ul>   | Enchantment                               |
 |  <ul><li>[ ] SPEL</li></ul>   | Spell                                     |
 |  <ul><li>[ ] SCRL</li></ul>   | Scroll                                    |
 |  <ul><li>[ ] ACTI</li></ul>   | Activator                                 |

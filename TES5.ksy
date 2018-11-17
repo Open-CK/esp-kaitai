@@ -132,6 +132,22 @@ enums:
     7: either_at_most_above
     8: either_at_most_below
 
+  ench_enit_cast_type:
+    0: constant_effect
+    1: fire_and_forget
+    2: concentration
+
+  ench_enit_delivery:
+    0: self
+    1: touch
+    2: aimed
+    3: target_actor
+    4: target_location
+
+  ench_enit_enchant_type:
+    0x06: enchantment
+    0x0C: staff_enchantment
+
 ###############################################################################
 #                             TYPE DEFINITIONS                                #
 ###############################################################################
@@ -508,6 +524,7 @@ types:
             '"SOUN"': soun_form
             '"ASPC"': aspc_form
             '"LTEX"': ltex_form
+            '"ENCH"': ench_form
             '"STAT"': stat_form
             '"GRAS"': gras_form
             '"TREE"': tree_form
@@ -3038,6 +3055,107 @@ types:
       - id: grass
         type: u4
         doc: Form ID of associated GRAS form
+
+###############################################################################
+#                               STATIC (STAT) FORM                            #
+###############################################################################
+  ench_form:
+    seq:
+      - id: fields
+        type: ench_field
+        repeat: eos
+        doc: Fields contained by ENCH form
+  
+  ench_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"OBND"': obnd_field
+            '"FULL"': ench_full_field
+            '"ENIT"': ench_enit_field
+            '"EFID"': ench_efid_field
+            '"EFIT"': ench_efit_field
+            '"CIS2"': cis2_field(data_size)
+            '"CTDA"': ctda_field
+        doc: Fields contained by ENCH form
+  
+  ench_full_field:
+    seq:
+      - id: full_name
+        type: lstring(_parent.data_size)
+        doc: Full (in-game) name
+
+  ench_enit_field:
+    seq:
+      - id: enchantment_cost
+        type: u4
+        doc: Enchantment cost
+      - id: flags
+        type: ench_enit_flags
+        doc: Enchantment flags
+      - id: cast_type
+        type: u4
+        enum: ench_enit_cast_type
+        doc: Cast type enumeration
+      - id: enchantment_amount
+        type: u4
+        doc: Fully charged value
+      - id: delivery
+        type: u4
+        enum: ench_enit_delivery
+        doc: Effect delivery method
+      - id: enchant_type
+        type: u4
+        enum: ench_enit_enchant_type
+        doc: Enchantment type
+      - id: charge_time
+        type: f4
+        doc: Charge time
+      - id: base_enchantment
+        type: u4
+        doc: Base enchantment ENCH formID
+      - id: worn_restrictions
+        type: u4
+        doc: FLST of enchantable slots
+        if: _parent.data_size == 36
+
+  ench_enit_flags:
+    seq:
+      - id: manual_calc
+        type: b1
+      - type: b1
+      - id: extend_duration_on_recast
+        type: b1
+      - type: b29
+
+  ench_efid_field:
+    seq:
+      - id: effect_id
+        type: u4
+        doc: Magic effect MGEF FormID
+
+  ench_efit_field:
+    seq:
+      - id: magnitude
+        type: f4
+        doc: Magnitude
+      - id: area_of_effect
+        type: u4
+        doc: Area of Effect
+      - id: duration
+        type: u4
+        doc: Duration (0 = instant)
 
 ###############################################################################
 #                               STATIC (STAT) FORM                            #
