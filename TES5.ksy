@@ -3374,7 +3374,7 @@ types:
         doc: Min slope
       - id: max_slope
         type: u1
-        id: Max slope
+        doc: Max slope
       - id: unused_1
         type: u1
         doc: Unused byte
