@@ -541,6 +541,8 @@ types:
             '"TREE"': tree_form
             '"LVLN"': lvln_form
             '"IDLM"': idlm_form
+            '"COBJ"': cobj_form
+            '"HAZD"': hazd_form
             '"CLMT"': clmt_form
             '"SPGD"': spgd_form
             '"RFCT"': rfct_form
@@ -3688,6 +3690,92 @@ types:
       - id: output_quantity
         type: u2
         doc: Quantity of output object created by recipe
+
+###############################################################################
+#                               HAZARD (HAZD) FORM                            #
+###############################################################################
+  hazd_form:
+    seq:
+      - id: fields
+        type: hazd_field
+        repeat: eos
+        doc: Fields contained by HAZD form
+
+  hazd_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"OBND"': obnd_field
+            '"FULL"': full_field(data_size)
+            '"MODL"': modl_field(data_size)
+            '"MODT"': modt_field(data_size)
+            '"MNAM"': hazd_mnam_field
+            '"DATA"': hazd_data_field
+        doc: Fields contained by HAZD form
+
+  hazd_mnam_field:
+    seq:
+      - id: image_space_modifier
+        type: u4
+        doc: Linked IMAD FormID
+
+  hazd_data_field:
+    seq:
+      - id: limit
+        type: u4
+        doc: Limit
+      - id: radius
+        type: f4
+        doc: Radius
+      - id: lifetime
+        type: f4
+        doc: Lifetime
+      - id: image_space_radius
+        type: f4
+        doc: Image space radius
+      - id: target_interval
+        type: f4
+        doc: Target interval
+      - id: flags
+        type: hazd_data_flags
+        doc: Flags
+      - id: spell
+        type: u4
+        doc: Linked SPEL FormID
+      - id: light
+        type: u4
+        doc: Linked LIGH FormID
+      - id: impact_data_set
+        type: u4
+        doc: Linked IPDS FormID
+      - id: sound
+        type: u4
+        doc: Linked SNDR FormID
+
+  hazd_data_flags:
+    seq:
+      - id: affects_player_only
+        type: b1
+      - id: inherit_duration_from_spawn_spell
+        type: b1
+      - id: align_to_impact_normal
+        type: b1
+      - id: inherit_radius_from_spawn_spell
+        type: b1
+      - id: drop_to_ground
+        type: b1
+      - type: b27
 
 ###############################################################################
 #                               CLIMATE (CLMT) FORM                           #

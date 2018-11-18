@@ -8,7 +8,7 @@ If you would like do help us read and write .esp/.esm files, join our [Discord](
 
 Progress
 --------
-**32** out of **118** <br />
+**33** out of **118** <br />
 If you're wondering how we're doing so far, our progress through potential records/forms is shown below:
 
 
@@ -58,7 +58,7 @@ If you're wondering how we're doing so far, our progress through potential recor
 |  <ul><li>[x] IDLM</li></ul>   | Idle Marker                               |
 |  <ul><li>[x] COBJ</li></ul>   | Constructible Object                      |
 |  <ul><li>[ ] PROJ</li></ul>   | Projectile                                |
-|  <ul><li>[ ] HAZD</li></ul>   | Hazard                                    |
+|  <ul><li>[x] HAZD</li></ul>   | Hazard                                    |
 |  <ul><li>[ ] SLGM</li></ul>   | Soul Gem                                  |
 |  <ul><li>[ ] LVLI</li></ul>   | Leveled Item                              |
 |  <ul><li>[ ] WTHR</li></ul>   | Weather                                   |
