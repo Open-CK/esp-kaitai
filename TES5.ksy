@@ -3623,6 +3623,73 @@ types:
         doc: Idle animation (IDLE) FormID
 
 ###############################################################################
+#                        CONSTRUCTIBLE OBJECT (COBJ) FORM                     #
+###############################################################################
+  cobj_form:
+    seq:
+      - id: fields
+        type: cobj_field
+        repeat: eos
+        doc: Fields contained by COBJ form
+
+  cobj_field:
+    seq:
+      - id: type
+        type: str
+        encoding: UTF-8
+        size: 4
+        doc: Unique type code
+      - id: data_size
+        type: u2
+        doc: Size, in bytes, of field (minus header)
+      - id: data
+        type:
+          switch-on: type
+          cases:
+            '"EDID"': edid_field(data_size)
+            '"COCT"': cobj_coct_field
+            '"CNTO"': cobj_cnto_field
+            '"COED"': coed_field
+            '"CTDA"': ctda_field
+            '"CNAM"': cobj_cnam_field
+            '"BNAM"': cobj_bnam_field
+            '"NAM1"': cobj_nam1_field
+        doc: Fields contained by COBJ form
+
+  cobj_coct_field:
+    seq:
+      - id: object_count
+        type: u4
+        doc: Number of input objects (CNTO fields) required
+  
+  cobj_cnto_field:
+    seq:
+      - id: item
+        type: u4
+        doc: FormID of INGR required to craft
+      - id: quantity
+        type: u4
+        doc: Quantity needed of linked INGR object
+  
+  cobj_cnam_field:
+    seq:
+      - id: output_object
+        type: u4
+        doc: FormID of resulting output object
+
+  cobj_bnam_field:
+    seq:
+      - id: bench_keyword
+        type: u4
+        doc: KYWD FormID
+
+  cobj_nam1_field:
+    seq:
+      - id: output_quantity
+        type: u2
+        doc: Quantity of output object created by recipe
+
+###############################################################################
 #                               CLIMATE (CLMT) FORM                           #
 ###############################################################################
   clmt_form:
